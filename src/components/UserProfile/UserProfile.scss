@@ -1,0 +1,16 @@
+.profile {
+  position: absolute;
+  right: 53px;
+  top: 30px;
+  &-text {
+    margin-left: 10px;
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%; /* 20.8px */
+  }
+  display: flex;
+  align-items: center;
+  margin-left: 500px;
+}

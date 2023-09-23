@@ -1,0 +1,31 @@
+@import "../variables.scss";
+.referral {
+  &__body {
+    width: 100%;
+  }
+  .table__wrapper {
+    margin-top: 20px;
+    height: 650px;
+  }
+  &__button {
+    margin-left: 0;
+    &:before {
+      width: 24px;
+      height: 24px;
+      left: 50%;
+      transform: translateY(-50%) translateX(-50%);
+      background-image: url("../../img/arrow-sm-left.png");
+      filter: invert(0);
+    }
+    display: flex;
+    width: 128px;
+    height: 45px;
+    padding: 10px 20px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 3px;
+    background: var(--Grey, #f4f4f4);
+  }
+  @include section;
+}

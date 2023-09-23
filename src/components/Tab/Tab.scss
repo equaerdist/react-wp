@@ -1,0 +1,50 @@
+.Tab {
+  display: block;
+  padding-top: 104px;
+  width: 259px;
+  border-right: 1px solid #e3e3e3;
+  position: relative;
+  padding-bottom: 66px;
+  height: 100vh;
+  &__exit {
+    border: none;
+    display: flex;
+    padding: 10px 20px;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 200px;
+    left: 29px;
+    color: black;
+    border-radius: 3px;
+    background-color: #f4f4f4;
+    font-size: 16px;
+    font-weight: 400;
+    bottom: 220px;
+    &:before {
+      position: absolute;
+      content: "";
+      background: url("../../img/log-out-03.svg") center center / cover
+        no-repeat;
+      left: 40px;
+      width: 20px;
+      height: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+}
+.item-enter {
+  opacity: 0;
+}
+.item-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+.item-exit {
+  opacity: 1;
+}
+.item-exit-active {
+  opacity: 0;
+  transition: opacity 500ms ease-in;
+}

@@ -1,0 +1,62 @@
+.cash {
+  padding-top: 31px;
+  padding-bottom: 41px;
+  margin-right: 32px;
+  width: 100%;
+  margin-left: 41px;
+  .table__wrapper {
+    height: 614px;
+  }
+  &__button {
+    &::before {
+      width: 14px;
+      height: 10px;
+      filter: invert(0);
+      background-image: url("../../img/Icon.png");
+    }
+    margin-left: 584px;
+  }
+  &__tables {
+    height: 100%;
+    .button {
+      margin-left: 0;
+    }
+    .search {
+      margin-inline: 7px;
+      margin-top: 0;
+    }
+    display: flex;
+    margin-top: 32px;
+  }
+  &__withdrawal {
+    &-head {
+      &:before {
+        width: 14px;
+        height: 10px;
+        filter: invert(0);
+        background-image: url("../../img/Icon.png");
+      }
+    }
+    width: 564px;
+    &-body {
+      padding-top: 6px;
+      border-radius: 3px;
+      border: 1px solid #e3e3e3;
+    }
+  }
+  &__request {
+    &-head {
+      &:before {
+        filter: invert(0);
+        background-image: url("../../img/bell.png");
+      }
+    }
+    width: 564px;
+    margin-left: 20px;
+    &-body {
+      border-radius: 3px;
+      border: 1px solid #e3e3e3;
+      padding-top: 6px;
+    }
+  }
+}

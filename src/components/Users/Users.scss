@@ -1,0 +1,50 @@
+.users {
+  padding-top: 31px;
+  margin-left: 40px;
+  margin-right: 32px;
+  width: 100%;
+  padding-bottom: 41px;
+  .test-sub {
+    &::before {
+      background-image: url("../../img/star.png");
+    }
+  }
+
+  &__button {
+    &:first-child {
+      margin-left: 0;
+    }
+    position: relative;
+    &:before {
+      width: 24px;
+      height: 24px;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      content: "";
+      position: absolute;
+      background: url("../../img/document.png") center center / cover no-repeat;
+    }
+  }
+  &__tools {
+    display: flex;
+  }
+}
+.button {
+  display: flex;
+  margin-left: 29px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20.8px;
+  padding: 10px 20px;
+  padding-left: 54px;
+  border: none;
+  align-items: center;
+  border-radius: 3px;
+  background: #000;
+  color: white;
+}
+button.button {
+  cursor: pointer;
+}

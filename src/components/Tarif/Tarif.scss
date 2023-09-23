@@ -1,0 +1,61 @@
+@import "../variables.scss";
+.tarif {
+  &__tools {
+    display: flex;
+  }
+  .button {
+    margin-left: 383px;
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+  width: 100%;
+  .table__wrapper {
+    height: 614px;
+  }
+  .search {
+    margin-inline: 7px;
+    margin-top: 3px;
+  }
+  &__promo,
+  &__add {
+    &:before {
+      filter: invert(0);
+      background-image: url("../../img/plus.png");
+    }
+  }
+  &__tables {
+    margin-top: 28px;
+    display: flex;
+  }
+  &__first {
+    &-body {
+      border-radius: 3px;
+      border: 1px solid #e3e3e3;
+      background: #fff;
+    }
+    &-head {
+      &:before {
+        background-image: url("../../img/folder-open.png");
+        filter: invert(0);
+      }
+    }
+    width: 564px;
+  }
+  &__second {
+    &-body {
+      border-radius: 3px;
+      border: 1px solid #e3e3e3;
+      background: #fff;
+    }
+    &-head {
+      &:before {
+        background-image: url("../../img/receipt-tax.png");
+        filter: invert(0);
+      }
+    }
+    width: 564px;
+    margin-left: 20px;
+  }
+  @include section;
+}

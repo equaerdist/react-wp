@@ -1,0 +1,103 @@
+.list__tab {
+  a {
+    text-decoration: none;
+  }
+  .a {
+    &:before {
+      background-image: url("../../img/cash.png");
+    }
+  }
+  .b {
+    &:before {
+      background-image: url("../../img/user.png");
+    }
+  }
+  .c {
+    &:before {
+      background-image: url("../../img/user-group.svg");
+    }
+  }
+  .d {
+    &:before {
+      background-image: url("../../img/clipboard-list.svg");
+    }
+  }
+  .e {
+    &:before {
+      background-image: url("../../img/cog.png");
+    }
+  }
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  margin-inline: 30px;
+  &-button {
+    position: relative;
+    &::before {
+      position: absolute;
+      content: "";
+      width: 24px;
+      height: 24px;
+      left: 24px;
+      top: 50%;
+      background: url("../../img/presentation-chart-bar.png") center center /
+        cover no-repeat;
+      transform: translateY(-50%);
+    }
+    &_4 {
+      &:before {
+        background-image: url("../../img/clipboard-list.svg");
+      }
+    }
+    &_5 {
+      &:before {
+        background-image: url("../../img/cog.png");
+      }
+    }
+    display: flex;
+    padding: 15px 20px;
+    padding-left: 54px;
+    border-radius: 3px;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 13.8px;
+    &_active {
+      &:before {
+        filter: invert(1);
+      }
+      color: #fff;
+      background-color: #000;
+    }
+    &_tarif {
+      &::before {
+        background-image: url("../../img/clipboard-list.svg");
+      }
+    }
+    &_user {
+      &:before {
+        background-image: url("../../img/user.png");
+      }
+    }
+    &_referral {
+      &:before {
+        background-image: url("../../img/user-group.svg");
+      }
+    }
+    &_setting {
+      &:before {
+        background-image: url("../../img/cog.png");
+      }
+    }
+    &_cash {
+      &:before {
+        background-image: url("../../img/cash.png");
+      }
+    }
+  }
+}
+a {
+  color: black;
+}

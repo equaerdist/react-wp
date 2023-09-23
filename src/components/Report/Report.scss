@@ -1,0 +1,176 @@
+.icon {
+  position: relative;
+  &:before {
+    filter: invert(1);
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    content: "";
+    background: url("../../img/cash.png") center center / cover no-repeat;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+.report {
+  .button {
+    margin-left: 0;
+  }
+  &__end {
+    justify-content: space-between;
+    display: flex;
+    margin-top: 28px;
+    width: 100%;
+  }
+  margin-left: 41px;
+  padding-top: 104px;
+  width: 100%;
+  margin-right: 119px;
+  &__head {
+    justify-content: space-between;
+    display: flex;
+    width: 100%;
+  }
+  .table__wrapper {
+    overflow-y: hidden;
+    margin-top: 0;
+    height: auto;
+  }
+  &__user-stat {
+    width: 490px;
+  }
+  &__user-stat-head {
+    &::before {
+      filter: invert(0);
+      background-image: url("../../img/users.png");
+    }
+  }
+  &__stat {
+    &-head {
+      &::before {
+        filter: invert(0);
+        background-image: url("../../img/chart-square-bar.png");
+      }
+    }
+    padding-bottom: 26px;
+    height: unset;
+    margin-top: 28px;
+  }
+  .first__date,
+  .second__date {
+    display: flex;
+  }
+  .second__date {
+    margin-left: 14px;
+  }
+  #choice {
+    margin-left: 25px;
+    border: none;
+  }
+  .wrapper {
+    padding-bottom: 28px;
+    border-radius: 3px;
+    border: 1px solid #e3e3e3;
+  }
+  &__graph {
+    margin-top: 33px;
+    display: flex;
+    padding-inline: 28px 15px;
+  }
+  &__params {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+
+  &__param {
+    #rub {
+      background: var(--rub-color);
+    }
+    #usdt {
+      background: var(--usdt-color);
+    }
+    #ton {
+      background: var(--ton-color);
+    }
+    #del {
+      background: var(--del-color);
+    }
+    #user {
+      background: var(--sub-color);
+    }
+    display: flex;
+    cursor: pointer;
+    margin-top: 22px;
+    position: relative;
+    .box {
+      position: absolute;
+      border-radius: 3px;
+      background: black;
+      width: 9px;
+      left: -15px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 9px;
+    }
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+  &__plot {
+    margin-left: 20px;
+  }
+  &__date {
+    input {
+      border: 1px solid #e3e3e3;
+      color: #000;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 130%; /* 20.8px */
+    }
+    label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 27px;
+      height: 24px;
+      color: #000;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 130%; /* 20.8px */
+      border-radius: 3px;
+      border: 1px solid #e3e3e3;
+      background: #f4f4f4;
+    }
+    margin-top: 6px;
+    display: flex;
+    justify-content: center;
+  }
+  &__pay {
+    &-stat {
+      width: 490px;
+      margin-left: 41px;
+    }
+  }
+  &__table {
+    th,
+    td {
+      text-align: center;
+    }
+  }
+  &__wallet {
+    width: 490px;
+    &-head {
+      margin-left: 0;
+    }
+  }
+  &__referral-award {
+    margin-left: 41px;
+    width: 490px;
+    &-head {
+      margin-left: 0;
+    }
+  }
+}
