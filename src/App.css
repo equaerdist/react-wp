@@ -14,7 +14,11 @@
   stroke-width: 2px;
   filter: drop-shadow(2px 2px 4px rgba(177, 177, 177, 0.5));
   white-space: pre-line;
+  width: 50px; /* Исправлено */
+  word-wrap: break-word;
+  word-break: break-all;
 }
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

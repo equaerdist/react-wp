@@ -16,6 +16,8 @@ import {
   graphLoading,
   setGraphData,
   setGroup,
+  setWalletFirstTime,
+  setWalletLastTime,
 } from "../../actions/reportActions";
 const Report = (props) => {
   const request = useHttp();
@@ -48,19 +50,15 @@ const Report = (props) => {
   const [del, setDel] = useState(true);
   const [ton, setTon] = useState(true);
   const [usdt, setUsdt] = useState(true);
+  const graphData = useSelector((state) => state.report.graphData);
   const {
     amountOfCreatedUsers,
     amountOfUsersWhoPayUsdt,
     amountOfUsersWhoPayDel,
     amountOfUsersWhoPayTon,
     amountOfUsersWhoPayRub,
-  } = useSelector((state) => state.report.graphData);
+  } = graphData;
   useEffect(() => {
-    dispatch("REPORT_LOADING_WALLET");
-    request(`${config.api}/report/wallet`)
-      .then(walletTransform)
-      .then((data) => dispatch(walletReport(data)))
-      .catch(() => dispatch("REPORT_ERROR_WALLET"));
     dispatch("REPORT_LOADING_REFERRAL");
     request(`${config.api}/report/referral`)
       .then(walletTransform)
@@ -71,7 +69,14 @@ const Report = (props) => {
       .then((data) => dispatch(userReport(data)))
       .catch(() => dispatch("REPORT_ERROR_USER"));
   }, [dispatch, request]);
-  const { firstTime, lastTime, group } = useSelector((state) => state.report);
+  const {
+    firstTime,
+    lastTime,
+    group,
+    graphProcess,
+    referralProcess,
+    userProcess,
+  } = useSelector((state) => state.report);
   useEffect(() => {
     dispatch(graphLoading());
     request(
@@ -82,12 +87,57 @@ const Report = (props) => {
       .then((data) => dispatch(setGraphData(data)))
       .catch(() => dispatch(graphError()));
   }, [firstTime, lastTime, group]);
+
+  const { walletFirstTime, walletLastTime, walletProcess } = useSelector(
+    (state) => state.report
+  );
+  useEffect(() => {
+    dispatch("REPORT_LOADING_WALLET");
+    request(
+      `${config.api}/report/wallet`,
+      {
+        firstTime: walletFirstTime,
+        lastTime: walletLastTime,
+      },
+      "POST"
+    )
+      .then(walletTransform)
+      .then((data) => dispatch(walletReport(data)))
+      .catch(() => dispatch("REPORT_ERROR_WALLET"));
+  }, [walletFirstTime, walletLastTime]);
   return (
     <main className="report">
       <div className="report__head">
         <div className="report__wallet">
-          <span className="icon button report__wallet-head">Кошелек</span>
+          <span className="icon button report__wallet-head">
+            <span>Кошелек</span>
+            <div className="first__date">
+              <label className="labelDate" htmlFor="date">
+                с
+              </label>
+              <input
+                className="date"
+                type="date"
+                id="walletFirstDate"
+                value={walletFirstTime}
+                onInput={(e) => dispatch(setWalletFirstTime(e.target.value))}
+              />
+            </div>
+            <div className="second__date">
+              <label className="labelDate" htmlFor="date">
+                по
+              </label>
+              <input
+                className="date"
+                type="date"
+                id="walletLastDate"
+                value={walletLastTime}
+                onInput={(e) => dispatch(setWalletLastTime(e.target.value))}
+              />
+            </div>
+          </span>
           <Table
+            process={walletProcess}
             headers={walletHeaders}
             body={walletArray}
             obj={walletReportObj}
@@ -99,6 +149,7 @@ const Report = (props) => {
             Реферальное вознаграждение
           </span>
           <Table
+            process={referralProcess}
             headers={referralHeaders}
             body={referralArray}
             obj={referralReportObj}
@@ -182,6 +233,8 @@ const Report = (props) => {
               </li>
             </ul>
             <Graph
+              {...graphData}
+              process={graphProcess}
               amountOfCreatedUsers={users ? amountOfCreatedUsers : null}
               amountOfUsersWhoPayDel={del ? amountOfUsersWhoPayDel : null}
               amountOfUsersWhoPayRub={rub ? amountOfUsersWhoPayRub : null}
@@ -196,6 +249,7 @@ const Report = (props) => {
               Пользователи
             </div>
             <Table
+              process={userProcess}
               obj={userSection}
               body={userArray}
               headers={userHeaders}
@@ -207,6 +261,7 @@ const Report = (props) => {
               Повторный платеж
             </div>
             <Table
+              process={userProcess}
               obj={repeatedObj}
               headers={repeatedPayHeaders}
               body={repeatedArray}

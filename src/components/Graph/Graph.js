@@ -3,11 +3,16 @@ import { useRef } from "react";
 import formatDate from "../../dataTransform/dateTransform";
 const Graph = (props) => {
   const {
+    process,
     amountOfCreatedUsers,
     amountOfUsersWhoPayUsdt,
     amountOfUsersWhoPayDel,
     amountOfUsersWhoPayTon,
     amountOfUsersWhoPayRub,
+    amountOfUsdtPaid,
+    amountOfRubPaid,
+    amountOfTonPaid,
+    amountOfDelPaid,
   } = props;
   const aou =
     amountOfCreatedUsers?.map((item) => ({
@@ -15,24 +20,28 @@ const Graph = (props) => {
       time: new Date(item.time),
     })) ?? [];
   const aopu =
-    amountOfUsersWhoPayUsdt?.map((item) => ({
+    amountOfUsersWhoPayUsdt?.map((item, i) => ({
       ...item,
       time: new Date(item.time),
+      cash: Math.round(amountOfUsdtPaid[i].amount),
     })) ?? [];
   const aopr =
-    amountOfUsersWhoPayRub?.map((item) => ({
+    amountOfUsersWhoPayRub?.map((item, i) => ({
       ...item,
       time: new Date(item.time),
+      cash: Math.round(amountOfRubPaid[i].amount),
     })) ?? [];
   const aopt =
-    amountOfUsersWhoPayTon?.map((item) => ({
+    amountOfUsersWhoPayTon?.map((item, i) => ({
       ...item,
       time: new Date(item.time),
+      cash: Math.round(amountOfTonPaid[i].amount),
     })) ?? [];
   const aopd =
-    amountOfUsersWhoPayDel?.map((item) => ({
+    amountOfUsersWhoPayDel?.map((item, i) => ({
       ...item,
       time: new Date(item.time),
+      cash: Math.round(amountOfDelPaid[i].amount),
     })) ?? [];
   const width = 800;
   const height = 300;
@@ -86,17 +95,29 @@ const Graph = (props) => {
       .attr("stroke", color)
       .on("mouseover", function (e, d) {
         d3.select(this).attr("fill", color);
-        console.log(d);
         charCont
           .append("text")
           .attr("class", "tooltip")
           .attr("x", xScale(d.time))
-          .attr("y", yScale(d.amount) + 10)
-          .text(`Количество: ${d.amount}, ${formatDate(d.time)}`);
+          .attr("y", yScale(d.amount) - 45)
+          .text(`Количество: ${d.amount}`);
+        if (!color.includes("sub"))
+          charCont
+            .append("text")
+            .attr("class", "tooltip")
+            .attr("x", xScale(d.time))
+            .attr("y", yScale(d.amount) - 25)
+            .text(`Сумма: ${d.cash}`);
+        charCont
+          .append("text")
+          .attr("class", "tooltip")
+          .attr("x", xScale(d.time))
+          .attr("y", yScale(d.amount) - 5)
+          .text(`${formatDate(d.time)}`);
       })
       .on("mouseout", function (d) {
         d3.select(this).attr("fill", "none");
-        charCont.select(".tooltip").remove();
+        charCont.selectAll(".tooltip").remove();
       });
   };
   makeCircles(".circles", "var(--sub-color)", aou);
@@ -113,13 +134,17 @@ const Graph = (props) => {
     })
     .y((d) => yScale(d.amount))
     .curve(d3.curveCardinal);
-
+  if (process === "error")
+    return <h2 style={{ marginInline: "auto" }}>Ошибка...</h2>;
   return (
     <svg
       ref={plot}
       width={width + 100}
       height={height + 50}
-      style={{ overflow: "visible" }}
+      style={{
+        overflow: "visible",
+        opacity: process !== "loading" ? "100%" : "50%",
+      }}
     >
       <path
         transform={`translate(${marginLeft}, ${marginTop})`}

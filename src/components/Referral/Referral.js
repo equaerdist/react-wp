@@ -10,6 +10,7 @@ import {
   setTerm,
   onNewParamsSet,
   onNewPage,
+  setR,
 } from "../../actions/referralActions";
 import Stack from "../../tools/stack";
 import config from "../../config";
@@ -33,6 +34,12 @@ const Referral = (props) => {
     referrals.length === 0 ? null : createReferralColumns(referrals[0]);
   const onClick = () => {
     if (!stack.current.isEmpty()) dispatch(setTerm(stack.current.pop()));
+    else {
+      dispatch("REFERRAL_LOADING_REFERRALS");
+      request(`${config.api}/user/referrals/father?term=${term}`)
+        .then((data) => dispatch(setTerm(data.term)))
+        .catch(() => dispatch("REFERRAL_ERROR_REFERRALS"));
+    }
   };
   const onSelected = (item) => {
     stack.current.push(term);
@@ -77,11 +84,16 @@ const Referral = (props) => {
   }));
   return (
     <main className="referral">
-      <button
-        className="button icon referral__button"
-        disabled={stack.current.isEmpty()}
-        onClick={onClick}
-      ></button>
+      <div className="wrapper">
+        <button
+          className="button icon referral__button"
+          onClick={onClick}
+        ></button>
+        <button className="button back" onClick={() => dispatch(setTerm(""))}>
+          Вернуться
+        </button>
+      </div>
+
       <div className="referral__body">
         <Search
           val={term}

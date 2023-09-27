@@ -7,6 +7,12 @@
     margin-top: 20px;
     height: 650px;
   }
+  .wrapper {
+    .back {
+      padding-inline: 10px;
+    }
+    display: flex;
+  }
   &__button {
     margin-left: 0;
     &:before {

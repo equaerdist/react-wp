@@ -15,6 +15,8 @@ import {
   setFirstTime,
   setSecondTime,
   setGroup,
+  setWalletFirstTime,
+  setWalletLastTime,
 } from "../actions/reportActions";
 const initialState = {
   walletProcess: "idle",
@@ -25,9 +27,15 @@ const initialState = {
   user: {},
   graphProcess: "idle",
   graphData: {},
-  firstTime: new Date().toISOString(),
-  lastTime: new Date().toISOString(),
+  firstTime: new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 3)
+    .toISOString()
+    .split("T")[0],
+  lastTime: new Date().toISOString().split("T")[0],
   group: "day",
+  walletFirstTime: new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 7)
+    .toISOString()
+    .split("T")[0],
+  walletLastTime: new Date().toISOString().split("T")[0],
 };
 const report = createReducer(initialState, (builder) => {
   builder
@@ -69,6 +77,7 @@ const report = createReducer(initialState, (builder) => {
     })
     .addCase(setGraphData, (state, action) => {
       state.graphData = action.payload;
+      state.graphProcess = "idle";
     })
     .addCase(setFirstTime, (state, action) => {
       state.firstTime = action.payload;
@@ -78,6 +87,12 @@ const report = createReducer(initialState, (builder) => {
     })
     .addCase(setGroup, (state, action) => {
       state.group = action.payload;
+    })
+    .addCase(setWalletFirstTime, (state, action) => {
+      state.walletFirstTime = action.payload;
+    })
+    .addCase(setWalletLastTime, (state, action) => {
+      state.walletLastTime = action.payload;
     })
     .addDefaultCase(() => {});
 });

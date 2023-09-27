@@ -1,3 +1,5 @@
+import formatDate from "./dateTransform";
+
 const createUserColumns = (obj) => {
   return Object.keys(obj).map((id) => {
     switch (id) {
@@ -19,8 +21,10 @@ const createUserColumns = (obj) => {
         return { id, label: "Активен", sort: id };
       case "createdAt":
         return { id, label: "Зарегистрирован", sort: id };
+      case "dateEnd":
+        return { id, label: "Дата окончания тарифа", sort: "usersKeys." + id };
       default:
-        throw new Error();
+        return null;
     }
   });
 };
@@ -32,6 +36,7 @@ const userTransform = (ar) => {
       isFree: user.isFree ? "Активна" : "Не активирована  ",
       statusTariff: user.statusTariff ? "Активен" : "Не активен",
       status: user.status ? "Да" : "Нет",
+      dateEnd: user.usersKeys ? formatDate(user.usersKeys.dateEnd) : "N/A",
     };
     return result;
   });

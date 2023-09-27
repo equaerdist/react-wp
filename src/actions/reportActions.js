@@ -14,6 +14,8 @@ const setGraphData = createAction("REPORT_GRAPH_SET");
 const setFirstTime = createAction("REPORT_SET_FIRST_TIME");
 const setSecondTime = createAction("REPORT_SET_SECOND_TIME");
 const setGroup = createAction("REPORT_SET_GROUP");
+const setWalletFirstTime = createAction("REPORT_SET_WALLET_FIRST_TIME");
+const setWalletLastTime = createAction("REPORT_SET_WALLET_LAST_TIME");
 export {
   walletReport,
   referralReport,
@@ -30,4 +32,6 @@ export {
   setSecondTime,
   setFirstTime,
   setGroup,
+  setWalletFirstTime,
+  setWalletLastTime,
 };
