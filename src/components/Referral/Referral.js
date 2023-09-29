@@ -10,7 +10,6 @@ import {
   setTerm,
   onNewParamsSet,
   onNewPage,
-  setR,
 } from "../../actions/referralActions";
 import Stack from "../../tools/stack";
 import config from "../../config";
@@ -35,10 +34,12 @@ const Referral = (props) => {
   const onClick = () => {
     if (!stack.current.isEmpty()) dispatch(setTerm(stack.current.pop()));
     else {
-      dispatch("REFERRAL_LOADING_REFERRALS");
-      request(`${config.api}/user/referrals/father?term=${term}`)
-        .then((data) => dispatch(setTerm(data.term)))
-        .catch(() => dispatch("REFERRAL_ERROR_REFERRALS"));
+      if (term && term !== "") {
+        dispatch("REFERRAL_LOADING_REFERRALS");
+        request(`${config.api}/user/referrals/father?term=${term}`)
+          .then((data) => dispatch(setTerm(data.term)))
+          .catch(() => dispatch("REFERRAL_ERROR_REFERRALS"));
+      }
     }
   };
   const onSelected = (item) => {
