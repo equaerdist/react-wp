@@ -17,9 +17,13 @@ import {
   setGroup,
   setWalletFirstTime,
   setWalletLastTime,
+  setGraphOffset,
+  setWalletOffset,
 } from "../actions/reportActions";
 const initialState = {
   walletProcess: "idle",
+  walletOffset: "full",
+  graphOffset: "full",
   wallet: {},
   referralProcess: "idle",
   referral: {},
@@ -31,7 +35,7 @@ const initialState = {
     .toISOString()
     .split("T")[0],
   lastTime: new Date().toISOString().split("T")[0],
-  group: "day",
+  group: "month",
   walletFirstTime: new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 7)
     .toISOString()
     .split("T")[0],
@@ -93,6 +97,12 @@ const report = createReducer(initialState, (builder) => {
     })
     .addCase(setWalletLastTime, (state, action) => {
       state.walletLastTime = action.payload;
+    })
+    .addCase(setWalletOffset, (state, action) => {
+      state.walletOffset = action.payload;
+    })
+    .addCase(setGraphOffset, (state, action) => {
+      state.graphOffset = action.payload;
     })
     .addDefaultCase(() => {});
 });

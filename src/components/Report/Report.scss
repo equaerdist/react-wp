@@ -16,6 +16,31 @@
   .button {
     margin-left: 0;
   }
+  .time {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-inline: 10px;
+    margin-left: 35px;
+    position: relative;
+    &::before {
+      position: absolute;
+      left: -20px;
+      top: 50%;
+      transform: translateY(-50%);
+      content: "";
+      background: url("./clock.svg") center center / cover no-repeat;
+      width: 24px;
+      height: 24px;
+    }
+  }
+  .time.clock_black {
+    margin-right: 15px;
+    background-color: inherit;
+    color: black;
+    &::before {
+      background-image: url("./clock_black.svg");
+    }
+  }
   &__end {
     display: flex;
     margin-top: 28px;
@@ -159,7 +184,7 @@
     }
   }
   &__wallet {
-    width: 490px;
+    width: 712px;
     &-head {
       margin-left: 0;
       display: flex;

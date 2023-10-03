@@ -1,8 +1,9 @@
 import { referralTransform } from "../dataTransform/referralTransform";
-
+import { createAction } from "@reduxjs/toolkit";
 const setReferrals = (payload) => ({ type: "REFERRAL_SET_REFERRALS", payload });
 const setTerm = (payload) => ({ type: "REFERRAL_SET_TERM", payload });
 const setPage = (payload) => ({ type: "REFERRAL_SET_PAGE", payload });
+const setLastTerm = createAction("REFERRAL_SET_PREV_TERM");
 const setOrder = (payload) => ({ type: "REFERRAL_SET_SORT_ORDER", payload });
 const setParam = (payload) => ({ type: "REFERRAL_SET_SORT_PARAM", payload });
 const onNewParamsSet =
@@ -35,4 +36,5 @@ export {
   setParam,
   onNewParamsSet,
   onNewPage,
+  setLastTerm,
 };

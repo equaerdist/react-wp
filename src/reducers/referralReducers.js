@@ -6,12 +6,15 @@ const initialState = {
   pageSize: 16,
   sortParam: "id",
   sortOrder: "asc",
+  prevTerm: "",
 };
 const referral = (state = initialState, action) => {
   switch (action.type) {
     case "REFERRAL_SET_REFERRALS": {
       return { ...state, referrals: action.payload, referralsProcess: "idle" };
     }
+    case "REFERRAL_SET_PREV_TERM":
+      return { ...state, prevTerm: action.payload };
     case "REFERRAL_SET_TERM":
       return { ...state, term: action.payload };
     case "REFERRAL_SET_PAGE":

@@ -18,6 +18,8 @@ import {
   setGroup,
   setWalletFirstTime,
   setWalletLastTime,
+  setWalletOffset,
+  setGraphOffset,
 } from "../../actions/reportActions";
 const Report = (props) => {
   const request = useHttp();
@@ -76,17 +78,19 @@ const Report = (props) => {
     graphProcess,
     referralProcess,
     userProcess,
+    walletOffset,
+    graphOffset,
   } = useSelector((state) => state.report);
   useEffect(() => {
     dispatch(graphLoading());
     request(
-      `${config.api}/statistics?group=${group}`,
+      `${config.api}/statistics?group=${group}&offset=${graphOffset}`,
       { firstTime, lastTime },
       "POST"
     )
       .then((data) => dispatch(setGraphData(data)))
       .catch(() => dispatch(graphError()));
-  }, [firstTime, lastTime, group]);
+  }, [firstTime, lastTime, group, graphOffset]);
 
   const { walletFirstTime, walletLastTime, walletProcess } = useSelector(
     (state) => state.report
@@ -94,7 +98,7 @@ const Report = (props) => {
   useEffect(() => {
     dispatch("REPORT_LOADING_WALLET");
     request(
-      `${config.api}/report/wallet`,
+      `${config.api}/report/wallet?offset=${walletOffset}`,
       {
         firstTime: walletFirstTime,
         lastTime: walletLastTime,
@@ -104,7 +108,7 @@ const Report = (props) => {
       .then(walletTransform)
       .then((data) => dispatch(walletReport(data)))
       .catch(() => dispatch("REPORT_ERROR_WALLET"));
-  }, [walletFirstTime, walletLastTime]);
+  }, [walletFirstTime, walletLastTime, walletOffset]);
   return (
     <main className="report">
       <div className="report__head">
@@ -120,7 +124,10 @@ const Report = (props) => {
                 type="date"
                 id="walletFirstDate"
                 value={walletFirstTime}
-                onInput={(e) => dispatch(setWalletFirstTime(e.target.value))}
+                onInput={(e) => {
+                  dispatch(setWalletFirstTime(e.target.value));
+                  dispatch(setWalletOffset("interval"));
+                }}
               />
             </div>
             <div className="second__date">
@@ -132,9 +139,18 @@ const Report = (props) => {
                 type="date"
                 id="walletLastDate"
                 value={walletLastTime}
-                onInput={(e) => dispatch(setWalletLastTime(e.target.value))}
+                onInput={(e) => {
+                  dispatch(setWalletLastTime(e.target.value));
+                  dispatch(setWalletOffset("interval"));
+                }}
               />
             </div>
+            <button
+              className="button time"
+              onClick={() => dispatch(setWalletOffset("full"))}
+            >
+              За все время
+            </button>
           </span>
           <Table
             process={walletProcess}
@@ -161,13 +177,22 @@ const Report = (props) => {
         <div className="icon button report__stat-head">Статистика подписок</div>
         <div className="wrapper">
           <div className="report__date">
+            <button
+              className="button time clock_black"
+              onClick={() => dispatch(setGraphOffset("full"))}
+            >
+              За все время
+            </button>
             <div className="first__date">
               <label htmlFor="date">с</label>
               <input
                 type="date"
                 id="date"
                 value={firstTime}
-                onInput={(e) => dispatch(setFirstTime(e.target.value))}
+                onInput={(e) => {
+                  dispatch(setFirstTime(e.target.value));
+                  dispatch(setGraphOffset("interval"));
+                }}
               />
             </div>
             <div className="second__date">
@@ -176,7 +201,10 @@ const Report = (props) => {
                 type="date"
                 id="date"
                 value={lastTime}
-                onInput={(e) => dispatch(setSecondTime(e.target.value))}
+                onInput={(e) => {
+                  dispatch(setSecondTime(e.target.value));
+                  dispatch(setGraphOffset("interval"));
+                }}
               />
             </div>
             <select

@@ -10,6 +10,7 @@ import {
   setTerm,
   onNewParamsSet,
   onNewPage,
+  setLastTerm,
 } from "../../actions/referralActions";
 import Stack from "../../tools/stack";
 import config from "../../config";
@@ -26,15 +27,19 @@ const Referral = (props) => {
     term,
     referrals,
     referralsProcess,
+    prevTerm,
   } = useSelector((state) => state.referral);
   const dispatch = useDispatch();
   const stack = useRef(new Stack());
   const label =
     referrals.length === 0 ? null : createReferralColumns(referrals[0]);
   const onClick = () => {
-    if (!stack.current.isEmpty()) dispatch(setTerm(stack.current.pop()));
-    else {
+    if (!stack.current.isEmpty()) {
+      dispatch(setLastTerm(term));
+      dispatch(setTerm(stack.current.pop()));
+    } else {
       if (term && term !== "") {
+        dispatch(setLastTerm(term));
         dispatch("REFERRAL_LOADING_REFERRALS");
         request(`${config.api}/user/referrals/father?term=${term}`)
           .then((data) => dispatch(setTerm(data.term)))
@@ -56,6 +61,12 @@ const Referral = (props) => {
     if (referrals.length % pageSize === 0 && referralsProcess === "idle") {
       dispatch(setPage(page + 1));
     }
+  };
+  const isSelected = (item) => {
+    let result = false;
+    if (item?.username === prevTerm || item?.firstName === prevTerm)
+      result = true;
+    return result;
   };
   useEffect(() => {
     dispatch(
@@ -109,7 +120,7 @@ const Referral = (props) => {
           sortParam,
           onSortSet,
           setNewPage,
-          null,
+          isSelected,
           onSelected
         )}
       </div>
