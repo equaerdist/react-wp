@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import { useRef } from "react";
 import formatDate from "../../dataTransform/dateTransform";
+import "./Graph.scss";
 const Graph = (props) => {
   const {
     process,
@@ -47,10 +48,10 @@ const Graph = (props) => {
   const height = 300;
 
   const marginBottom = 20;
-  const marginLeft = 50;
+  const marginLeft = 90;
   const marginTop = 25;
 
-  const plot = useRef();
+  const plot = useRef(null);
   const charCont = d3.select(plot.current);
 
   const xScale = d3
@@ -59,72 +60,93 @@ const Graph = (props) => {
       d3.min([...aou, ...aopd, ...aopr, ...aopt, ...aopu], (d) => d.time),
       d3.max([...aou, ...aopd, ...aopr, ...aopt, ...aopu], (d) => d.time),
     ])
-    .range([0, width - 100]);
+    .range([0, width - marginLeft]);
   const yScale = d3
     .scaleLinear()
     .domain([
       0,
       d3.max([...aou, ...aopd, ...aopr, ...aopt, ...aopu], (d) => d.amount),
     ])
-    .range([height, 0]);
+    .range([height - marginTop, 0]);
 
-  const yAxis = d3.axisLeft(yScale);
-  const xAxis = d3.axisBottom(xScale);
+  const yAxis = d3
+    .axisLeft(yScale)
+    .ticks(5)
+    .tickSize(-width + marginLeft);
+  const xAxis = d3
+    .axisBottom(xScale)
+    .ticks(5)
+    .tickSize(-height - 5);
+  charCont.select(".x-axis").remove();
+  charCont.select(".y-axis").remove();
   charCont
-    .select(".x-axis")
+    .append("g")
+    .attr("class", "x-axis")
     .attr("transform", `translate(${marginLeft}, ${height + marginTop})`)
     .call(xAxis);
   charCont
-    .select(".y-axis")
+    .append("g")
+    .attr("class", "y-axis")
     .attr("transform", `translate(${marginLeft}, ${marginBottom})`)
     .call(yAxis);
-
-  const makeCircles = (circleSelector, color, data) => {
-    charCont.select(circleSelector).selectAll("circle").remove();
-
+  const makeTextGrey = (selector) => {
     charCont
-      .select(circleSelector)
+      .select(selector)
+      .selectAll("text")
+      .attr("color", "rgba(0,0,0, .5)")
+      .attr("font-size", "15px");
+  };
+  const makeGridGrey = (selector) => {
+    charCont
+      .select(selector)
+      .selectAll("line")
+      .attr("stroke", "rgba(0, 0, 0, 0.5)");
+  };
+  makeGridGrey(".y-axis");
+  makeGridGrey(".x-axis");
+  makeTextGrey(".x-axis");
+  makeTextGrey(".y-axis");
+  const makeCircles = (circleSelector, color, data) => {
+    charCont
+      .append("g")
+      .attr("class", circleSelector)
+      .attr("transform", `translate(${marginLeft}, ${marginTop})`)
       .selectAll("circle")
+
       .data(data)
       .enter()
       .append("circle")
+
       .attr("cx", (d) => xScale(d.time))
-      .attr("cy", (d) => yScale(d.amount))
+      .attr("cy", (d) => yScale(d.amount) - 5)
       .attr("r", 6)
       .attr("fill", "none")
       .attr("stroke", color)
       .on("mouseover", function (e, d) {
         d3.select(this).attr("fill", color);
-        charCont
-          .append("text")
-          .attr("class", "tooltip")
-          .attr("x", xScale(d.time))
-          .attr("y", yScale(d.amount) - 45)
-          .text(`Количество: ${d.amount}`);
-        if (!color.includes("sub"))
-          charCont
-            .append("text")
-            .attr("class", "tooltip")
-            .attr("x", xScale(d.time))
-            .attr("y", yScale(d.amount) - 25)
-            .text(`Сумма: ${d.cash}`);
-        charCont
-          .append("text")
-          .attr("class", "tooltip")
-          .attr("x", xScale(d.time))
-          .attr("y", yScale(d.amount) - 5)
-          .text(`${formatDate(d.time)}`);
+        const label = document.createElement("div");
+        label.classList.add("tooltip");
+        label.style.left = e.pageX + 10 + "px";
+        label.style.top = e.pageY + "px";
+        document.body.append(label);
+        let text = "";
+        if (color.includes("sub"))
+          text = `Количество: ${d.amount}\nВремя: ${formatDate(d.time)}`;
+        else
+          text = `Количество: ${d.amount}\nСумма: ${
+            d.cash
+          }\nВремя: ${formatDate(d.time)}`;
+        label.textContent = text;
       })
       .on("mouseout", function (d) {
         d3.select(this).attr("fill", "none");
-        charCont.selectAll(".tooltip").remove();
-      });
+        document.querySelectorAll(".tooltip").forEach((e) => e.remove());
+      })
+      .style("opacity", 0)
+      .transition()
+      .duration(500)
+      .style("opacity", 1);
   };
-  makeCircles(".circles", "var(--sub-color)", aou);
-  makeCircles(".circles.usdt", "var(--usdt-color)", aopu);
-  makeCircles(".circles.rub", "var(--rub-color)", aopr);
-  makeCircles(".circles.ton", "var(--ton-color)", aopt);
-  makeCircles(".circles.del", "var(--del-color)", aopd);
 
   const lineFunc = d3
     .line()
@@ -132,8 +154,36 @@ const Graph = (props) => {
       if (!d.time) return xScale(new Date());
       return xScale(d.time);
     })
-    .y((d) => yScale(d.amount))
-    .curve(d3.curveCardinal);
+    .y((d) => yScale(d.amount));
+  // .curve(d3.curveCardinal);
+  const makePath = (color, data) => {
+    charCont
+      .append("path")
+      .attr("class", "path")
+      .attr("class", "path_active")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", color)
+      .attr("stroke-width", 3)
+      .style("opacity", 0)
+      .transition()
+      .duration(500)
+      .style("opacity", 1)
+      .attr("transform", `translate(${marginLeft}, ${marginTop - 5})`)
+      .attr("d", lineFunc);
+  };
+  charCont.selectAll("path").remove();
+  makePath("var(--sub-color)", aou);
+  makePath("var(--del-color)", aopd);
+  makePath("var(--ton-color)", aopt);
+  makePath("var(--usdt-color)", aopu);
+  makePath("var(--rub-color)", aopr);
+  charCont.selectAll(".circles").remove();
+  makeCircles("circles", "var(--sub-color)", aou);
+  makeCircles("circles usdt", "var(--usdt-color)", aopu);
+  makeCircles("circles rub", "var(--rub-color)", aopr);
+  makeCircles("circles ton", "var(--ton-color)", aopt);
+  makeCircles("circles del", "var(--del-color)", aopd);
   if (process === "error")
     return <h2 style={{ marginInline: "auto" }}>Ошибка...</h2>;
   return (
@@ -142,68 +192,11 @@ const Graph = (props) => {
       width={width + 100}
       height={height + 50}
       style={{
+        position: "relative",
         overflow: "visible",
         opacity: process !== "loading" ? "100%" : "50%",
       }}
-    >
-      <path
-        transform={`translate(${marginLeft}, ${marginTop})`}
-        fill="none"
-        stroke="var(--sub-color)"
-        strokeWidth="1.5"
-        d={lineFunc(aou)}
-      ></path>
-      <path
-        transform={`translate(${marginLeft}, ${marginTop})`}
-        fill="none"
-        stroke="var(--del-color)"
-        strokeWidth="1.5"
-        d={lineFunc(aopd)}
-      ></path>
-      <path
-        transform={`translate(${marginLeft}, ${marginTop})`}
-        fill="none"
-        stroke="var(--ton-color)"
-        strokeWidth="1.5"
-        d={lineFunc(aopt)}
-      ></path>
-      <path
-        transform={`translate(${marginLeft}, ${marginTop})`}
-        fill="none"
-        stroke="var(--usdt-color)"
-        strokeWidth="1.5"
-        d={lineFunc(aopu)}
-      ></path>
-      <path
-        transform={`translate(${marginLeft}, ${marginTop})`}
-        fill="none"
-        stroke="var(--rub-color)"
-        strokeWidth="1.5"
-        d={lineFunc(aopr)}
-      ></path>
-      <g className="x-axis" />
-      <g className="y-axis" style={{ marginTop: `${marginTop}px` }} />
-      <g
-        className="circles"
-        transform={`translate(${marginLeft}, ${marginTop})`}
-      ></g>
-      <g
-        className="circles rub"
-        transform={`translate(${marginLeft}, ${marginTop})`}
-      ></g>
-      <g
-        className="circles del"
-        transform={`translate(${marginLeft}, ${marginTop})`}
-      ></g>
-      <g
-        className="circles ton"
-        transform={`translate(${marginLeft}, ${marginTop})`}
-      ></g>
-      <g
-        className="circles usdt"
-        transform={`translate(${marginLeft}, ${marginTop})`}
-      ></g>
-    </svg>
+    ></svg>
   );
 };
 export default Graph;

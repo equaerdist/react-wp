@@ -1,0 +1,29 @@
+.grid {
+  position: absolute;
+  top: 200px;
+}
+
+.tooltip {
+  position: absolute;
+  filter: drop-shadow(2px 2px 4px rgba(177, 177, 177, 0.5));
+  white-space: pre-line;
+  width: 200px; /* Исправлено */
+  height: auto;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  word-wrap: break-word;
+  word-break: break-all;
+}
+.path {
+  opacity: 0;
+}
+path {
+  transition: 1s all;
+}
+.path_active {
+  opacity: 1;
+}
