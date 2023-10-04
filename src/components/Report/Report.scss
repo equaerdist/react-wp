@@ -178,9 +178,12 @@
     }
   }
   &__table {
-    th,
+    th {
+    }
     td {
-      text-align: center;
+      padding-inline: auto;
+      margin-inline: auto;
+      text-align: left;
     }
   }
   &__wallet {
