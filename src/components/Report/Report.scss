@@ -51,6 +51,14 @@
   width: 100%;
   margin-right: 119px;
   &__head {
+    th {
+      text-align: left;
+    }
+    td {
+      padding-inline: auto;
+      margin-inline: auto;
+      text-align: left;
+    }
     display: flex;
     width: 100%;
   }
@@ -178,13 +186,6 @@
     }
   }
   &__table {
-    th {
-    }
-    td {
-      padding-inline: auto;
-      margin-inline: auto;
-      text-align: left;
-    }
   }
   &__wallet {
     width: 712px;
