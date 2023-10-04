@@ -157,10 +157,11 @@ const Graph = (props) => {
     .y((d) => yScale(d.amount));
   // .curve(d3.curveCardinal);
   const makePath = (color, data) => {
+    let colorTemp = color.slice(6, 10);
+    if (colorTemp[3] === "-") colorTemp = colorTemp.slice(0, 3);
     charCont
       .append("path")
-      .attr("class", "path")
-      .attr("class", "path_active")
+      .attr("class", `path ${colorTemp}`)
       .datum(data)
       .attr("fill", "none")
       .attr("stroke", color)

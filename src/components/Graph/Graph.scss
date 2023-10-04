@@ -2,10 +2,24 @@
   position: absolute;
   top: 200px;
 }
-
+.usdt {
+  filter: drop-shadow(2px 2px 4px var(--usdt-color));
+}
+.ton {
+  filter: drop-shadow(2px 2px 4px var(--ton-color));
+}
+.rub {
+  filter: drop-shadow(2px 2px 4px var(--rub-color));
+}
+.del {
+  filter: drop-shadow(2px 2px 4px var(--del-color));
+}
+.sub {
+  filter: drop-shadow(2px 2px 4px var(--sub-color));
+}
 .tooltip {
   position: absolute;
-  filter: drop-shadow(2px 2px 4px rgba(177, 177, 177, 0.5));
+
   white-space: pre-line;
   width: 200px; /* Исправлено */
   height: auto;
