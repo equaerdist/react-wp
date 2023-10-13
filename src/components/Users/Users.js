@@ -27,7 +27,7 @@ const Users = (props) => {
 
   const [exportState, setExportState] = useState(false);
   const [testState, setTestState] = useState(false);
-
+  const { project } = useSelector((state) => state.global);
   const condition = useSelector((state) => state.user.userProcess);
   const request = useHttp();
   const dispatch = useDispatch();
@@ -51,14 +51,14 @@ const Users = (props) => {
     return result;
   };
   const onSelected = (item) => {
-    if (item.status === 1) return;
+    if (item.status === 1 || item.status === "Да") return;
     if (isSelected(item))
       dispatch(setSelected(selected.filter((e) => e.id !== item.id)));
     else dispatch(setSelected([...selected, item]));
   };
   const users = useSelector((state) => state.user.users);
   const onInput = (value) => setSearchTerm(value);
-  let labels = users.length === 0 ? null : createUserColumns(users[0]);
+  let labels = users.length === 0 ? null : createUserColumns(users[0], project);
   useEffect(() => {
     let term = searchTerm;
     if (!term) term = "";
@@ -104,7 +104,7 @@ const Users = (props) => {
     if (!term) term = "";
     dispatch(onInit(request, config.api, sortParam, sortOrder, term, pageSize));
     // eslint-disable-next-line
-  }, [sortParam, sortOrder, searchTerm, request, dispatch]);
+  }, [sortParam, sortOrder, searchTerm, request, dispatch, project]);
   return (
     <main className="users">
       <ExportUsers
@@ -112,10 +112,12 @@ const Users = (props) => {
         setOpen={setExportState}
         handleRequest={onHandleRequest}
       ></ExportUsers>
-      <TestUserSub
-        open={testState}
-        handleClose={() => setTestState(false)}
-      ></TestUserSub>
+      {project.includes("poleteli_vpn") ? (
+        <TestUserSub
+          open={testState}
+          handleClose={() => setTestState(false)}
+        ></TestUserSub>
+      ) : null}
       <div className="users__tools">
         <button
           className="button users__button export"
@@ -123,12 +125,14 @@ const Users = (props) => {
         >
           Экспорт пользователей
         </button>
-        <button
-          className="button users__button test-sub"
-          onClick={() => setTestState(true)}
-        >
-          Выдать тестовую подписку
-        </button>
+        {project.includes("poleteli_vpn") ? (
+          <button
+            className="button users__button test-sub"
+            onClick={() => setTestState(true)}
+          >
+            Выдать тестовую подписку
+          </button>
+        ) : null}
       </div>
       <Search val={searchTerm} onInput={onInput}></Search>
       {TableWrapper(

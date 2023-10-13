@@ -1,5 +1,7 @@
 import { useCallback } from "react";
+import { UseSelector, useSelector } from "react-redux/es/hooks/useSelector";
 const useHttp = () => {
+  const { project } = useSelector((state) => state.global);
   const request = useCallback(
     async (
       url,
@@ -12,8 +14,13 @@ const useHttp = () => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       };
       if (body) body = JSON.stringify(body);
-
-      const response = await fetch(url, { headers, method, body });
+      if (url && url.includes("?")) url = url + `&project=${project}`;
+      else url = url + `?project=${project}`;
+      const response = await fetch(url, {
+        headers,
+        method,
+        body,
+      });
 
       if (!response.ok) {
         if (response.status === 403) throw new Error("Неправильные данные");
@@ -28,7 +35,7 @@ const useHttp = () => {
         return response;
       return await response.json();
     },
-    []
+    [project]
   );
   return request;
 };

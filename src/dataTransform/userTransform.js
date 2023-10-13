@@ -1,7 +1,7 @@
 import formatDate from "./dateTransform";
 
-const createUserColumns = (obj) => {
-  return Object.keys(obj).map((id) => {
+const createUserColumns = (obj, project) => {
+  let result = Object.keys(obj).map((id) => {
     switch (id) {
       case "id":
         return { id, label: "Id", sort: id };
@@ -27,6 +27,18 @@ const createUserColumns = (obj) => {
         return null;
     }
   });
+  if (project && project.includes("god"))
+    result = result.map((item) => {
+      if (!item) return null;
+      if (
+        (item && item.id === "dateEnd") ||
+        item.id === "isFree" ||
+        item.id === "statusTariff"
+      )
+        return null;
+      return item;
+    });
+  return result;
 };
 const userTransform = (ar) => {
   return ar.map((user) => {
@@ -36,7 +48,11 @@ const userTransform = (ar) => {
       isFree: user.isFree ? "Активна" : "Не активирована  ",
       statusTariff: user.statusTariff ? "Активен" : "Не активен",
       status: user.status ? "Да" : "Нет",
-      dateEnd: user.usersKeys ? formatDate(user.usersKeys.dateEnd) : "N/A",
+      dateEnd: user.usersKeys
+        ? user.usersKeys[0]
+          ? formatDate(user.usersKeys[0].dateEnd)
+          : "N/A"
+        : "N/A",
     };
     return result;
   });

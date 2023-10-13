@@ -5,26 +5,46 @@ import useHttp from "../../hooks/useHttp";
 import LinearProgress from "@mui/material/LinearProgress";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import Sender from "../sender/Sender";
 import {
   setSettings,
   settingsInit,
   settingsUpdate,
+  setText,
+  setType,
+  sendMessage,
 } from "../../actions/settingsActions";
 import config from "../../config";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 const Settings = (props) => {
+  const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
+  const { project } = useSelector((state) => state.global);
   const { settings, settingsProcess } = useSelector((state) => state.settings);
   const request = useHttp();
   useEffect(() => {
     dispatch(settingsInit(request, config.api));
-  }, [dispatch, request]);
+  }, [dispatch, request, project]);
   const onRequest = () => {
-    dispatch(settingsUpdate(request, config.api, settings));
+    dispatch(settingsUpdate(request, config.api, settings, project));
   };
   return (
     <main className="settings">
-      <button className="button icon settings__button">Создать рассылку</button>
+      <button
+        className="button icon settings__button"
+        onClick={() => setModal((state) => !state)}
+      >
+        Создать рассылку
+      </button>
+      {modal ? (
+        <Sender
+          open={modal}
+          handleClose={() => setModal(false)}
+          onSwitch={(value) => dispatch(setType(value))}
+          onType={(value) => dispatch(setText(value))}
+          onRequest={sendMessage}
+        ></Sender>
+      ) : null}
       <div className="wrapper">
         <div className="settings__input">
           <div className="button icon settings__input-head">
@@ -37,7 +57,7 @@ const Settings = (props) => {
                 dispatch(
                   setSettings({
                     ...settings,
-                    commissionInputUsdt: parseInt(value),
+                    commissionInputUsdt: value,
                   })
                 )
               }
@@ -49,7 +69,7 @@ const Settings = (props) => {
                 dispatch(
                   setSettings({
                     ...settings,
-                    commissionInputTon: parseInt(value),
+                    commissionInputTon: value,
                   })
                 )
               }
@@ -61,7 +81,7 @@ const Settings = (props) => {
                 dispatch(
                   setSettings({
                     ...settings,
-                    commissionInputDel: parseInt(value),
+                    commissionInputDel: value,
                   })
                 )
               }
@@ -75,41 +95,53 @@ const Settings = (props) => {
           </div>
           <div className="settings__referral-body">
             <Search
-              val={settings.referralRewardLvl1}
+              val={
+                project && !project.includes("god")
+                  ? settings.referralRewardLvl1
+                  : settings.refferalRewardLvl1
+              }
               onInput={(value) =>
                 dispatch(
                   setSettings({
                     ...settings,
-                    referralRewardLvl1: parseInt(value),
+                    refferalRewardLvl1: value,
+                    referralRewardLvl1: value,
                   })
                 )
               }
               label="1 уровень"
             ></Search>
             <Search
-              val={settings.referralRewardLvl2}
+              val={
+                project && !project.includes("god")
+                  ? settings.referralRewardLvl2
+                  : settings.refferalRewardLvl2
+              }
               onInput={(value) =>
                 dispatch(
                   setSettings({
                     ...settings,
-                    referralRewardLvl2: parseInt(value),
+                    refferalRewardLvl2: value,
+                    referralRewardLvl2: value,
                   })
                 )
               }
               label="2 уровень"
             ></Search>
-            <Search
-              val={settings.referralRewardLvl3}
-              onInput={(value) =>
-                dispatch(
-                  setSettings({
-                    ...settings,
-                    referralRewardLvl3: parseInt(value),
-                  })
-                )
-              }
-              label="3 уровень"
-            ></Search>
+            {project && !project.includes("god") ? (
+              <Search
+                val={settings.referralRewardLvl3}
+                onInput={(value) =>
+                  dispatch(
+                    setSettings({
+                      ...settings,
+                      referralRewardLvl3: value,
+                    })
+                  )
+                }
+                label="3 уровень"
+              ></Search>
+            ) : null}
           </div>
         </div>
       </div>
@@ -124,7 +156,7 @@ const Settings = (props) => {
               dispatch(
                 setSettings({
                   ...settings,
-                  commissionOutputUsdt: parseInt(value),
+                  commissionOutputUsdt: value,
                 })
               )
             }
@@ -136,7 +168,7 @@ const Settings = (props) => {
               dispatch(
                 setSettings({
                   ...settings,
-                  commissionOutputTon: parseInt(value),
+                  commissionOutputTon: value,
                 })
               )
             }
@@ -148,7 +180,7 @@ const Settings = (props) => {
               dispatch(
                 setSettings({
                   ...settings,
-                  commissionOutputDel: parseInt(value),
+                  commissionOutputDel: value,
                 })
               )
             }

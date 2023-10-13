@@ -161,7 +161,7 @@ const Graph = (props) => {
     if (colorTemp[3] === "-") colorTemp = colorTemp.slice(0, 3);
     charCont
       .append("path")
-      .attr("class", `path ${colorTemp}`)
+      .attr("class", `path`)
       .datum(data)
       .attr("fill", "none")
       .attr("stroke", color)

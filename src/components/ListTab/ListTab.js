@@ -43,16 +43,18 @@ const ListTab = (props) => {
       >
         Рефералы
       </NavLink>
-      <NavLink
-        to="/main/tarif"
-        className={({ isActive, isPending }) =>
-          isActive
-            ? "list__tab-button list__tab-button_active d"
-            : "list__tab-button d"
-        }
-      >
-        Тарифы
-      </NavLink>
+      {props.project && !props.project.includes("god") ? (
+        <NavLink
+          to="/main/tarif"
+          className={({ isActive, isPending }) =>
+            isActive
+              ? "list__tab-button list__tab-button_active d"
+              : "list__tab-button d"
+          }
+        >
+          Тарифы
+        </NavLink>
+      ) : null}
       <NavLink
         to="/main/settings"
         className={({ isActive, isPending }) =>

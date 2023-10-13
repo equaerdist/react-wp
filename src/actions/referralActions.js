@@ -15,7 +15,10 @@ const onNewParamsSet =
     )
       .then(referralTransform)
       .then((data) => dispatch(setReferrals(data)))
-      .catch(() => dispatch("REFERRAL_ERROR_REFERRALS"));
+      .catch((e) => {
+        dispatch("REFERRAL_ERROR_REFERRALS");
+        console.log(e.message);
+      });
   };
 const onNewPage =
   (request, api, referrals, page, pageSize, term, sortParam, sortOrder) =>

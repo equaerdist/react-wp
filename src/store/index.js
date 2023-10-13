@@ -1,6 +1,6 @@
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import report from "../reducers/reportReducers";
-
+import { reducers as global } from "../slicers/global";
 import cash from "../reducers/cashReducers";
 import thunk from "redux-thunk";
 import user from "../reducers/userReducers";
@@ -15,7 +15,7 @@ const stringMiddleware = (store) => (next) => (action) => {
 };
 
 const store = createStore(
-  combineReducers({ report, cash, user, referral, tariff, settings }),
+  combineReducers({ report, cash, user, referral, tariff, settings, global }),
   compose(
     applyMiddleware(thunk, stringMiddleware),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()

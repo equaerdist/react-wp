@@ -31,18 +31,23 @@ const Referral = (props) => {
   } = useSelector((state) => state.referral);
   const dispatch = useDispatch();
   const stack = useRef(new Stack());
+  const { project } = useSelector((state) => state.global);
   const label =
-    referrals.length === 0 ? null : createReferralColumns(referrals[0]);
+    referrals.length === 0
+      ? null
+      : createReferralColumns(referrals[0], project);
   const onClick = () => {
     if (!stack.current.isEmpty()) {
       dispatch(setLastTerm(term));
       dispatch(setTerm(stack.current.pop()));
     } else {
       if (term && term !== "") {
-        dispatch(setLastTerm(term));
         dispatch("REFERRAL_LOADING_REFERRALS");
         request(`${config.api}/user/referrals/father?term=${term}`)
-          .then((data) => dispatch(setTerm(data.term)))
+          .then((data) => {
+            dispatch(setLastTerm(term));
+            dispatch(setTerm(data.term));
+          })
           .catch(() => dispatch("REFERRAL_ERROR_REFERRALS"));
       }
     }
@@ -64,7 +69,10 @@ const Referral = (props) => {
   };
   const isSelected = (item) => {
     let result = false;
-    if (item?.username === prevTerm || item?.firstName === prevTerm)
+    if (
+      item?.username === prevTerm ||
+      (item?.firstName === prevTerm && prevTerm !== "")
+    )
       result = true;
     return result;
   };
@@ -72,7 +80,7 @@ const Referral = (props) => {
     dispatch(
       onNewParamsSet(request, config.api, pageSize, term, sortOrder, sortParam)
     );
-  }, [sortParam, sortOrder, term, dispatch, request, pageSize]);
+  }, [sortParam, sortOrder, term, dispatch, request, pageSize, project]);
   useEffect(() => {
     if (page !== 1) {
       dispatch(
@@ -101,7 +109,13 @@ const Referral = (props) => {
           className="button icon referral__button"
           onClick={onClick}
         ></button>
-        <button className="button back" onClick={() => dispatch(setTerm(""))}>
+        <button
+          className="button back"
+          onClick={() => {
+            dispatch(setTerm(""));
+            dispatch(setLastTerm(""));
+          }}
+        >
           Вернуться
         </button>
       </div>

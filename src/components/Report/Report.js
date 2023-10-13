@@ -24,7 +24,7 @@ import {
 const Report = (props) => {
   const request = useHttp();
   const dispatch = useDispatch();
-
+  const project = useSelector((state) => state.global);
   const walletReportObj = useSelector((state) => state.report.wallet);
   const walletArray = useMemo(() => [walletReportObj], [walletReportObj]);
   const walletHeaders = useMemo(() => ["Всего", "Заморожено", "Доступно"], []);
@@ -70,7 +70,7 @@ const Report = (props) => {
     request(`${config.api}/report/user`)
       .then((data) => dispatch(userReport(data)))
       .catch(() => dispatch("REPORT_ERROR_USER"));
-  }, [dispatch, request]);
+  }, [dispatch, request, project]);
   const {
     firstTime,
     lastTime,
@@ -90,7 +90,7 @@ const Report = (props) => {
     )
       .then((data) => dispatch(setGraphData(data)))
       .catch(() => dispatch(graphError()));
-  }, [firstTime, lastTime, group, graphOffset]);
+  }, [firstTime, lastTime, group, graphOffset, project]);
 
   const { walletFirstTime, walletLastTime, walletProcess } = useSelector(
     (state) => state.report
@@ -108,7 +108,7 @@ const Report = (props) => {
       .then(walletTransform)
       .then((data) => dispatch(walletReport(data)))
       .catch(() => dispatch("REPORT_ERROR_WALLET"));
-  }, [walletFirstTime, walletLastTime, walletOffset]);
+  }, [walletFirstTime, walletLastTime, walletOffset, project]);
   return (
     <main className="report">
       <div className="report__head">
