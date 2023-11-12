@@ -51,14 +51,16 @@ const Report = (props) => {
   const [users, setUsers] = useState(true);
   const [del, setDel] = useState(true);
   const [ton, setTon] = useState(true);
-  const [usdt, setUsdt] = useState(true);
+  const [trx, setTrx] = useState(true);
+  const [bnb, setBnb] = useState(true);
   const graphData = useSelector((state) => state.report.graphData);
   const {
     amountOfCreatedUsers,
-    amountOfUsersWhoPayUsdt,
+    amountOfUsersWhoPayBnb,
     amountOfUsersWhoPayDel,
     amountOfUsersWhoPayTon,
     amountOfUsersWhoPayRub,
+    amountOfUsersWhoPayTrx,
   } = graphData;
   useEffect(() => {
     dispatch("REPORT_LOADING_REFERRAL");
@@ -248,25 +250,34 @@ const Report = (props) => {
                 style={{}}
                 onClick={() => setTon((ton) => !ton)}
               >
-                <div className="box" id={ton ? "ton" : null}></div>
+                <div className="box ton" id={ton ? "ton" : null}></div>
                 <span> оплатили TON</span>
               </li>
               <li
                 className="report__param"
                 style={{}}
-                onClick={() => setUsdt((usdt) => !usdt)}
+                onClick={() => setBnb((bnb) => !bnb)}
               >
-                <div className="box usdt" id={usdt ? "usdt" : null}></div>
-                <span> оплатили USDT</span>
+                <div className="box bnb" id={bnb ? "bnb" : null}></div>
+                <span> оплатили BNB</span>
+              </li>
+              <li
+                className="report__param"
+                style={{}}
+                onClick={() => setTrx((trx) => !trx)}
+              >
+                <div className="box trx" id={trx ? "trx" : null}></div>
+                <span> оплатили TRX</span>
               </li>
             </ul>
             <Graph
               {...graphData}
               process={graphProcess}
+              amountOfUsersWhoPayBnb={bnb ? amountOfUsersWhoPayBnb : null}
               amountOfCreatedUsers={users ? amountOfCreatedUsers : null}
               amountOfUsersWhoPayDel={del ? amountOfUsersWhoPayDel : null}
               amountOfUsersWhoPayRub={rub ? amountOfUsersWhoPayRub : null}
-              amountOfUsersWhoPayUsdt={usdt ? amountOfUsersWhoPayUsdt : null}
+              amountOfUsersWhoPayTrx={trx ? amountOfUsersWhoPayTrx : null}
               amountOfUsersWhoPayTon={ton ? amountOfUsersWhoPayTon : null}
             ></Graph>
           </div>

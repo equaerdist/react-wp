@@ -3,8 +3,8 @@ const walletTransform = (walletReport) => {
   for (let item in walletReport) {
     result[
       item
-    ] = `RUB: ${walletReport[item].rub}\nUSDT: ${walletReport[item].usdt}
-    DEL: ${walletReport[item].del}\nTON: ${walletReport[item].ton}`;
+    ] = `RUB: ${walletReport[item].rub}\nTRX: ${walletReport[item].trx}
+    DEL: ${walletReport[item].del}\nTON: ${walletReport[item].ton}\nBNB: ${walletReport[item].bnb}`;
   }
   return result;
 };

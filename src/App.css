@@ -1,9 +1,10 @@
 .App {
   --rub-color: #e8bf56;
-  --usdt-color: #e85656;
+  --bnb-color: #e85656;
   --ton-color: #78cb46;
   --del-color: #5688e8;
   --sub-color: #7f7f7f;
+  --trx-color: rgba(85, 45, 253, 1);
   text-align: center;
   height: 100vh;
   display: flex;

@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { UseSelector, useSelector } from "react-redux/es/hooks/useSelector";
+import { useSelector } from "react-redux/es/hooks/useSelector";
 const useHttp = () => {
   const { project } = useSelector((state) => state.global);
   const request = useCallback(

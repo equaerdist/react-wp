@@ -6,28 +6,81 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Sender from "../sender/Sender";
+import { useMemo } from "react";
+import useSort from "../../hooks/useSort";
 import {
+  setNewSettings,
   setSettings,
   settingsInit,
   settingsUpdate,
+  setSelectedSettings,
   setText,
   setType,
   sendMessage,
 } from "../../actions/settingsActions";
 import config from "../../config";
 import { useEffect, useState } from "react";
+import ColumnGroupingTable from "../EndedTable/EndedTable";
+import TableWrapper from "../TableWrapper/TableWrapper";
+import { Tab } from "@mui/material";
+import { createSettingColumns } from "../../dataTransform/settingsTransform";
+import SettingsEditor from "../SettingsEditor/SettingsEditor";
 const Settings = (props) => {
   const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
   const { project } = useSelector((state) => state.global);
-  const { settings, settingsProcess } = useSelector((state) => state.settings);
+
+  const { settings, settingsProcess, selectedSettings } = useSelector(
+    (state) => state.settings
+  );
+  const { onSortSet, page, pageSize, sortParam, sortOrder, setPage } =
+    useSort();
   const request = useHttp();
-  useEffect(() => {
-    dispatch(settingsInit(request, config.api));
-  }, [dispatch, request, project]);
-  const onRequest = () => {
-    dispatch(settingsUpdate(request, config.api, settings, project));
+  const setNewPage = () => {
+    if (
+      settings.length % pageSize === 0 &&
+      settingsProcess === "idle" &&
+      page * pageSize === settings.length
+    )
+      setPage((page) => page + 1);
   };
+  const isSelected = (item) => {
+    return item?.name === selectedSettings?.name;
+  };
+  const onSelected = (item) => {
+    dispatch(setSelectedSettings(item));
+  };
+  useEffect(() => {
+    dispatch(
+      settingsInit(
+        request,
+        `${
+          config.api
+        }/settings?sortOrder=${sortOrder}&sortParam=${sortParam}&page=${1}&pageSize=${pageSize}`
+      )
+    );
+  }, [dispatch, request, project, pageSize, sortParam, sortOrder]);
+  useEffect(() => {
+    if (page !== 1) {
+      dispatch(
+        setNewSettings(
+          request,
+          `${config.api}/settings?sortOrder=${sortOrder}&sortParam=${sortParam}&page=${page}&pageSize=${pageSize}`,
+          settings
+        )
+      );
+    }
+  }, [dispatch, page, request]);
+  const onRequest = (newSettings) => {
+    dispatch(settingsUpdate(request, config.api, newSettings, settings));
+  };
+  const handleClose = () => {
+    dispatch(setSelectedSettings(null));
+  };
+  const labels = useMemo(
+    () => (settings.length > 0 ? createSettingColumns(settings[0]) : []),
+    [settings]
+  );
   return (
     <main className="settings">
       <button
@@ -45,7 +98,15 @@ const Settings = (props) => {
           onRequest={sendMessage}
         ></Sender>
       ) : null}
-      <div className="wrapper">
+      {selectedSettings ? (
+        <SettingsEditor
+          process={settingsProcess}
+          onRequest={onRequest}
+          handleClose={handleClose}
+          {...selectedSettings}
+        ></SettingsEditor>
+      ) : null}
+      {/*  <div className="wrapper">
         <div className="settings__input">
           <div className="button icon settings__input-head">
             Процент на пополнение
@@ -187,24 +248,19 @@ const Settings = (props) => {
             label="DEL"
           ></Search>
         </div>
-      </div>
-      {settingsProcess === "loading" ? (
-        <LinearProgress sx={{ mt: "20px", width: "381px" }} color="inherit" />
-      ) : null}
-      {settingsProcess === "error" ? (
-        <Alert severity="error" sx={{ mt: "20px", width: "381px" }}>
-          <AlertTitle>Ошибка</AlertTitle>
-          Произошла ошибка при применении настроек —
-          <strong>попробуйте снова!</strong>
-        </Alert>
-      ) : null}
-      <button
-        className="button settings__save"
-        disabled={settingsProcess === "loading"}
-        onClick={onRequest}
-      >
-        Сохранить изменения
-      </button>
+      </div> */}
+      {TableWrapper(
+        ColumnGroupingTable,
+        settings,
+        labels,
+        settingsProcess,
+        sortOrder,
+        sortParam,
+        onSortSet,
+        setNewPage,
+        isSelected,
+        onSelected
+      )}
     </main>
   );
 };

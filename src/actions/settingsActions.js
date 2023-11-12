@@ -1,4 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
+import { dispatch } from "d3";
 
 const setSettings = (payload) => ({
   type: "SETTINGS_SET_SETTINGS",
@@ -6,28 +7,36 @@ const setSettings = (payload) => ({
 });
 const setText = createAction("SETTINGS_SET_TEXT");
 const setType = createAction("SETTINGS_SET_TYPE");
+const setSelectedSettings = createAction("SETTINGS_SET_SELECTED");
 const settingsInit = (request, api) => (dispatch) => {
   dispatch("SETTINGS_LOADING_SETTINGS");
-  request(`${api}/settings`)
+  request(`${api}`)
     .then((settings) => {
       dispatch(setSettings(settings));
     })
     .catch(() => dispatch("SETTINGS_ERROR_SETTINGS"));
 };
-const settingsUpdate = (request, api, oldSettings, project) => (dispatch) => {
+const setNewSettings = (request, api, oldSettings) => (dispatch) => {
   dispatch("SETTINGS_LOADING_SETTINGS");
-  let modifiedSettings = oldSettings;
-  Object.keys(oldSettings).forEach((item) => {
-    if (parseFloat(modifiedSettings[item]) && item !== "updatedAt") {
-      modifiedSettings[item] = parseFloat(modifiedSettings[item]);
-    }
-  });
-  if (project && project.includes("god")) {
-    delete modifiedSettings.referralRewardLvl2;
-    delete modifiedSettings.referralRewardLvl1;
-  }
-  request(`${api}/settings`, modifiedSettings, "PUT")
-    .then(() => dispatch(setSettings(oldSettings)))
+  request(`${api}`)
+    .then((settings) => {
+      dispatch(setSettings([...oldSettings, ...settings]));
+    })
+    .catch(() => dispatch("SETTINGS_ERROR_SETTINGS"));
+};
+const settingsUpdate = (request, api, oldSettings, oldArray) => (dispatch) => {
+  dispatch("SETTINGS_LOADING_SETTINGS");
+  request(`${api}/settings`, oldSettings, "PUT")
+    .then(() => {
+      dispatch(setSelectedSettings(oldSettings));
+      dispatch(
+        setSettings(
+          oldArray.map((item) =>
+            item.name === oldSettings.name ? oldSettings : item
+          )
+        )
+      );
+    })
     .catch(() => dispatch("SETTINGS_ERROR_SETTINGS"));
 };
 const sendMessage = (request, api, type, text) => (dispatch) => {
@@ -43,4 +52,6 @@ export {
   setText,
   setType,
   sendMessage,
+  setSelectedSettings,
+  setNewSettings,
 };

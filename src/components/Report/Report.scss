@@ -118,9 +118,6 @@
     #rub {
       background: var(--rub-color);
     }
-    #usdt {
-      background: var(--usdt-color);
-    }
     #ton {
       background: var(--ton-color);
     }
@@ -129,6 +126,12 @@
     }
     #user {
       background: var(--sub-color);
+    }
+    #trx {
+      background: var(--trx-color);
+    }
+    #bnb {
+      background: var(--bnb-color);
     }
     display: flex;
     cursor: pointer;

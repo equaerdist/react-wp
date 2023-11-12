@@ -6,25 +6,33 @@ const Graph = (props) => {
   const {
     process,
     amountOfCreatedUsers,
-    amountOfUsersWhoPayUsdt,
+    amountOfUsersWhoPayTrx,
     amountOfUsersWhoPayDel,
     amountOfUsersWhoPayTon,
     amountOfUsersWhoPayRub,
-    amountOfUsdtPaid,
+    amountOfUsersWhoPayBnb,
+    amountOfTrxPaid,
     amountOfRubPaid,
     amountOfTonPaid,
     amountOfDelPaid,
+    amountOfBnbPaid,
   } = props;
   const aou =
     amountOfCreatedUsers?.map((item) => ({
       ...item,
       time: new Date(item.time),
     })) ?? [];
-  const aopu =
-    amountOfUsersWhoPayUsdt?.map((item, i) => ({
+  const aopb =
+    amountOfUsersWhoPayBnb?.map((item, i) => ({
       ...item,
       time: new Date(item.time),
-      cash: Math.round(amountOfUsdtPaid[i].amount),
+      cash: Math.round(amountOfBnbPaid[i].amount),
+    })) ?? [];
+  const aopu =
+    amountOfUsersWhoPayTrx?.map((item, i) => ({
+      ...item,
+      time: new Date(item.time),
+      cash: Math.round(amountOfTrxPaid[i].amount),
     })) ?? [];
   const aopr =
     amountOfUsersWhoPayRub?.map((item, i) => ({
@@ -57,15 +65,24 @@ const Graph = (props) => {
   const xScale = d3
     .scaleTime()
     .domain([
-      d3.min([...aou, ...aopd, ...aopr, ...aopt, ...aopu], (d) => d.time),
-      d3.max([...aou, ...aopd, ...aopr, ...aopt, ...aopu], (d) => d.time),
+      d3.min(
+        [...aou, ...aopd, ...aopr, ...aopt, ...aopu, ...aopb],
+        (d) => d.time
+      ),
+      d3.max(
+        [...aou, ...aopd, ...aopr, ...aopt, ...aopu, ...aopb],
+        (d) => d.time
+      ),
     ])
     .range([0, width - marginLeft]);
   const yScale = d3
     .scaleLinear()
     .domain([
       0,
-      d3.max([...aou, ...aopd, ...aopr, ...aopt, ...aopu], (d) => d.amount),
+      d3.max(
+        [...aou, ...aopd, ...aopr, ...aopt, ...aopu, ...aopb],
+        (d) => d.amount
+      ),
     ])
     .range([height - marginTop, 0]);
 
@@ -151,7 +168,6 @@ const Graph = (props) => {
   const lineFunc = d3
     .line()
     .x((d) => {
-      if (!d.time) return xScale(new Date());
       return xScale(d.time);
     })
     .y((d) => yScale(d.amount));
@@ -177,16 +193,31 @@ const Graph = (props) => {
   makePath("var(--sub-color)", aou);
   makePath("var(--del-color)", aopd);
   makePath("var(--ton-color)", aopt);
-  makePath("var(--usdt-color)", aopu);
+  makePath("var(--trx-color)", aopu);
   makePath("var(--rub-color)", aopr);
+  makePath("var(--bnb-color", aopb);
+
   charCont.selectAll(".circles").remove();
   makeCircles("circles", "var(--sub-color)", aou);
-  makeCircles("circles usdt", "var(--usdt-color)", aopu);
+  makeCircles("circles trx", "var(--trx-color)", aopu);
   makeCircles("circles rub", "var(--rub-color)", aopr);
   makeCircles("circles ton", "var(--ton-color)", aopt);
   makeCircles("circles del", "var(--del-color)", aopd);
+  makeCircles("circles bnb", "var(--bnb-color)", aopb);
+  console.log([...aou, ...aopd, ...aopr, ...aopt, ...aopu]);
   if (process === "error")
     return <h2 style={{ marginInline: "auto" }}>Ошибка...</h2>;
+  if (
+    aou?.length === 0 &&
+    aopu?.length === 0 &&
+    aopr?.length === 0 &&
+    aopt?.length === 0 &&
+    aopd?.length === 0 &&
+    aopb?.length === 0
+  )
+    return (
+      <h2 style={{ marginInline: "auto" }}>Нету информации для отображения.</h2>
+    );
   return (
     <svg
       ref={plot}
