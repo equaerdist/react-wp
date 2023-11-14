@@ -17,8 +17,8 @@ const createUserColumns = (obj, project) => {
         return { id, label: "Тестовая подписка", sort: id };
       case "statusTariff":
         return { id, label: "Статус тарифа", sort: id };
-      case "status":
-        return { id, label: "Активен", sort: id };
+      /*  case "status":
+        return { id, label: "Активен", sort: id }; */
       case "createdAt":
         return { id, label: "Зарегистрирован", sort: id };
       case "dateEnd":

@@ -14,8 +14,8 @@ const createReferralColumns = (obj, project) => {
         return { id, label: "Тестовый период", sort: id };
       case "statusTariff":
         return { id, label: "Статус тарифа", sort: id };
-      case "status":
-        return { id, label: "Активен", sort: id };
+      /*  case "status":
+        return { id, label: "Активен", sort: id }; */
       case "createdAt":
         return { id, label: "Зарегистрирован", sort: id };
       case "active":
@@ -46,7 +46,6 @@ const referralTransform = (a) => {
   return a.map((ref) => {
     let result = {
       ...ref,
-      status: ref.status ? "Да" : "Нет",
       isFree: ref.isFree ? "Активирован" : "Неактивен",
       statusTariff: ref.statusTariff ? "Активен" : "Неактивен",
       dateEnd: ref.usersKeys
