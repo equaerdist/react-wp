@@ -247,7 +247,10 @@ const Tarif = (props) => {
           <div className="tarif__first-body">
             <Search
               val={tariffTerm}
-              onInput={(value) => setTariffTerm(value)}
+              onInput={(value) => {
+                setTariffTerm(value);
+                dispatch(setTariffPage(1));
+              }}
             ></Search>
             {TableWrapper(
               ColumnGroupingTable,
@@ -268,7 +271,10 @@ const Tarif = (props) => {
           <div className="tarif__second-body">
             <Search
               val={promocodeTerm}
-              onInput={(value) => setPromocodeTerm(value)}
+              onInput={(value) => {
+                setPromocodeTerm(value);
+                dispatch(setPromocodePage(1));
+              }}
             ></Search>
             {TableWrapper(
               ColumnGroupingTable,

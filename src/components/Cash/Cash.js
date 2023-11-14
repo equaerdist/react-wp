@@ -78,8 +78,14 @@ const Cash = (props) => {
     if (isSelected(item)) dispatch(removeSelect(item));
     else dispatch(selectRequest(item));
   };
-  const onRequestInput = (value) => dispatch(inputRequest(value));
-  const onGivenInput = (value) => dispatch(inputGiven(value));
+  const onRequestInput = (value) => {
+    dispatch(inputRequest(value));
+    setRequestPage(1);
+  };
+  const onGivenInput = (value) => {
+    dispatch(inputGiven(value));
+    setGivenPage(1);
+  };
   useEffect(() => {
     if (givenPage !== 1)
       dispatch(
