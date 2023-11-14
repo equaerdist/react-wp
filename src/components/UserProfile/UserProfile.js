@@ -4,7 +4,7 @@ const UserProfile = (props) => {
   return (
     <div className="profile">
       <img src={Profile} alt="user-logo" className="profile-img" />
-      <span className="profile-text">Андрей Хомич</span>
+      <span className="profile-text">ADMIN</span>
     </div>
   );
 };

@@ -218,6 +218,7 @@ const Report = (props) => {
               <option value="month">по месяцам</option>
               <option value="day">по дням</option>
               <option value="year">по годам</option>
+              <option value="week">по неделям</option>
             </select>
           </div>
           <div className="report__graph">

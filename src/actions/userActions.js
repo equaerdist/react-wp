@@ -59,10 +59,10 @@ const applyFree = (request, api, selected, duration, all) => (dispatch) => {
     .catch(() => dispatch("USER_ERROR_FREE_USERS"));
 };
 const onFreeSort =
-  (request, api, sortParam, pageSize, sortOrder) => (dispatch) => {
+  (request, api, sortParam, pageSize, sortOrder, term) => (dispatch) => {
     dispatch("USER_LOADING_FREE_USERS");
     request(
-      `${api}/user/demo?page=${1}&pageSize=${pageSize}&sortParam=${sortParam}&sortOrder=${sortOrder}&searchTerm=`
+      `${api}/user/demo?page=${1}&pageSize=${pageSize}&sortParam=${sortParam}&sortOrder=${sortOrder}&searchTerm=${term}`
     )
       .then(userTransform)
       .then((data) => dispatch(setFreeUsers([...data])))

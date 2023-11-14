@@ -123,7 +123,10 @@ const Referral = (props) => {
       <div className="referral__body">
         <Search
           val={term}
-          onInput={(value) => dispatch(setTerm(value))}
+          onInput={(value) => {
+            dispatch(setTerm(value));
+            dispatch(setPage(1));
+          }}
         ></Search>
         {TableWrapper(
           ColumnGroupingTable,

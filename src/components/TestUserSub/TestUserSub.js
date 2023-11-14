@@ -37,6 +37,7 @@ export default function TestUserSub(props) {
 
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortParam, setSortParam] = useState("id");
+  const [term, setTerm] = useState("");
 
   const [duration, setDuration] = useState(0);
 
@@ -86,7 +87,7 @@ export default function TestUserSub(props) {
           pageSize,
           sortParam,
           sortOrder,
-          "",
+          term,
           freeUsers
         )
       );
@@ -102,10 +103,11 @@ export default function TestUserSub(props) {
 
         sortParam,
         pageSize,
-        sortOrder
+        sortOrder,
+        term
       )
     );
-  }, [sortParam, sortOrder, request, dispatch]);
+  }, [sortParam, sortOrder, request, dispatch, term]);
   return (
     <Modal
       open={open}
@@ -114,6 +116,14 @@ export default function TestUserSub(props) {
       aria-describedby="child-modal-description"
     >
       <Box sx={{ ...style, width: "50%" }}>
+        <Search
+          val={term}
+          onInput={(term) => {
+            setTerm(term);
+            dispatch(setFreePage(1));
+          }}
+          label="Поиск"
+        ></Search>
         {TableWrapper(
           ColumnGroupingTable,
           freeUsers,

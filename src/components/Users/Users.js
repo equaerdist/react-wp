@@ -57,7 +57,10 @@ const Users = (props) => {
     else dispatch(setSelected([...selected, item]));
   };
   const users = useSelector((state) => state.user.users);
-  const onInput = (value) => setSearchTerm(value);
+  const onInput = (value) => {
+    setSearchTerm(value);
+    dispatch(setPage(1));
+  };
   let labels = users.length === 0 ? null : createUserColumns(users[0], project);
   useEffect(() => {
     let term = searchTerm;
