@@ -113,6 +113,7 @@ const Tarif = (props) => {
       setTariffSortParam,
       setTariffSortOrder
     );
+    dispatch(setTariffPage(1));
   };
   const onSortPromoSet = (property) => {
     onSortSet(
@@ -122,6 +123,7 @@ const Tarif = (props) => {
       setPromocodeSortParam,
       setPromocodeSortOrder
     );
+    dispatch(setPromocodePage(1));
   };
   const onSetNewTariffPage = () =>
     setNewPage(

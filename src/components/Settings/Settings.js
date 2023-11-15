@@ -256,7 +256,10 @@ const Settings = (props) => {
         settingsProcess,
         sortOrder,
         sortParam,
-        onSortSet,
+        (prop) => {
+          onSortSet(prop);
+          setPage(1);
+        },
         setNewPage,
         isSelected,
         onSelected

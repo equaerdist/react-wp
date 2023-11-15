@@ -13,7 +13,7 @@ import {
   setFreeSelected,
   applyFree,
 } from "../../actions/userActions";
-import { createUserColumns } from "../../dataTransform/userTransform";
+import { createTestUserSubColumns } from "../../dataTransform/userTransform";
 import { onSortSet, setNewPage } from "../../tools/sortHandler";
 import { useEffect, useState } from "react";
 import useHttp from "../../hooks/useHttp";
@@ -59,8 +59,10 @@ export default function TestUserSub(props) {
   const onFreeRequest = () => {
     dispatch(applyFree(request, config.api, freeSelected, duration, freeUsers));
   };
-  const onSort = (property) =>
+  const onSort = (property) => {
     onSortSet(property, sortParam, sortOrder, setSortParam, setSortOrder);
+    dispatch(setFreePage(1));
+  };
   const request = useHttp();
   const notes = freeUsers.map((item) => {
     let temp = item;
@@ -68,7 +70,8 @@ export default function TestUserSub(props) {
     delete temp.isFree;
     return temp;
   });
-  const labels = freeUsers.length === 0 ? null : createUserColumns(notes[0]);
+  const labels =
+    freeUsers.length === 0 ? null : createTestUserSubColumns(notes[0]);
   const onNewPage = () =>
     setNewPage(
       freeUsers,

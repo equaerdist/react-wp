@@ -60,6 +60,7 @@ const Referral = (props) => {
     const isAsc = property === sortParam && sortOrder === "asc";
     dispatch(setParam(property));
     dispatch(setOrder(isAsc ? "desc" : "asc"));
+    dispatch(setPage(1));
   };
   const request = useHttp();
   const setNewPage = () => {

@@ -35,6 +35,7 @@ const Users = (props) => {
     const isAsc = property === sortParam && sortOrder === "asc";
     setSortParam(property);
     setSortOrder(isAsc ? "desc" : "asc");
+    dispatch(setPage(1));
   };
   const setNewPage = () => {
     if (users.length % pageSize === 0 && condition === "idle")

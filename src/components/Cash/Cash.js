@@ -47,6 +47,7 @@ const Cash = (props) => {
     const isAsc = property === sortGivenParam && sortGivenOrder === "asc";
     setGivenSortParam(property);
     setGivenSortOrder(isAsc ? "desc" : "asc");
+    setGivenPage(1);
   };
 
   const onRequestClick = () => {
@@ -56,13 +57,22 @@ const Cash = (props) => {
     const isAsc = property === sortRequestParam && sortRequestOrder === "asc";
     setRequestSortParam(property);
     setRequestSortOrder(isAsc ? "desc" : "asc");
+    setRequestPage(1);
   };
   const setNewRequestPage = () => {
-    if (requestNotes.length % pageSize === 0 && givenCondition === "idle")
+    if (
+      requestNotes.length % pageSize === 0 &&
+      givenCondition === "idle" &&
+      requestPage * pageSize === requestNotes.length
+    )
       setRequestPage((page) => page + 1);
   };
   const setNewGivenPage = () => {
-    if (givenNotes.length % pageSize === 0 && requestCondition === "idle")
+    if (
+      givenNotes.length % pageSize === 0 &&
+      requestCondition === "idle" &&
+      givenPage * pageSize === givenNotes.length
+    )
       setGivenPage((page) => page + 1);
   };
 
