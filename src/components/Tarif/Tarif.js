@@ -36,7 +36,7 @@ const Tarif = (props) => {
 
   const [tariffSortOrder, setTariffSortOrder] = useState("asc");
   const [promocodeSortOrder, setPromocodeSortOrder] = useState("asc");
-
+  const project = useSelector((state) => state.global.project);
   const [tariffCreator, setTariffCreator] = useState(false);
   const [promoCreator, setPromoCreator] = useState(false);
   const [tariffTerm, setTariffTerm] = useState("");
@@ -113,7 +113,6 @@ const Tarif = (props) => {
       setTariffSortParam,
       setTariffSortOrder
     );
-    dispatch(setTariffPage(1));
   };
   const onSortPromoSet = (property) => {
     onSortSet(
@@ -123,7 +122,6 @@ const Tarif = (props) => {
       setPromocodeSortParam,
       setPromocodeSortOrder
     );
-    dispatch(setPromocodePage(1));
   };
   const onSetNewTariffPage = () =>
     setNewPage(
@@ -190,7 +188,14 @@ const Tarif = (props) => {
       )
     );
     // eslint-disable-next-line
-  }, [tariffSortOrder, tariffSortParam, tariffTerm, dispatch, request]);
+  }, [
+    tariffSortOrder,
+    tariffSortParam,
+    tariffTerm,
+    dispatch,
+    request,
+    project,
+  ]);
   useEffect(() => {
     dispatch(
       promoInit(
@@ -209,6 +214,7 @@ const Tarif = (props) => {
     promocodeTerm,
     dispatch,
     request,
+    project,
   ]);
   return (
     <main className="tarif">

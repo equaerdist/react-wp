@@ -25,6 +25,7 @@ export default function ColumnGroupingTable(props) {
 
   if (!columns) return <h1>Нет информации для отображения</h1>;
   columns = columns.filter((column) => column);
+  if (columns.length === 0) return <h1>Нет информации для отображения</h1>;
   const onPage = (e) => {
     const scrollTop = e.target.scrollTop;
     const scrollHeight = e.target.scrollHeight;
@@ -39,14 +40,12 @@ export default function ColumnGroupingTable(props) {
         width: "100%",
         marginTop: "10px",
         height: "600px",
-        overflowX: "hidden",
         overflowY: "auto",
       }}
     >
       <TableContainer
         sx={{
           maxHeight: "100%",
-          overflowX: "hidden",
           overflowY: "auto",
           ...styles,
         }}

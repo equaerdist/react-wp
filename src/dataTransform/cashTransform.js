@@ -27,13 +27,14 @@ const cashTranformGiven = (data, isRequest) => {
 const createColumnsForCashGiven = (obj, width = 0) => {
   const minWidth = width / Object.keys(obj).length;
   return Object.keys(obj).map((id) => {
+    console.log(id);
     switch (id) {
       case "createAt":
         return { id, label: "Дата создания", minWidth, sort: id };
       case "currency":
         return { id, label: "Валюта", minWidth, sort: id };
-      case "firstName":
-        return { id, label: "Первое имя", minWidth, sort: "user." + id };
+      /*   case "firstName":
+        return { id, label: "Первое имя", minWidth, sort: "user." + id }; */
       //   case "username":
       //     return { id, label: "Имя пользователя", minWidth, sort: "user." + id };
       case "paidAt":
@@ -42,6 +43,8 @@ const createColumnsForCashGiven = (obj, width = 0) => {
         return { id, label: "Сумма", minWidth, sort: id };
       case "statusPay":
         return { id, label: "Одобрен", minWidth, sort: id };
+      case "description":
+        return { id, label: "Описание", sort: id };
       default:
         return null;
       //   case "paymentMethod":

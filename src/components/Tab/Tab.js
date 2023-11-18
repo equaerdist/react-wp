@@ -9,7 +9,7 @@ const Tab = (props) => {
   const { project } = useSelector((state) => state.global);
   return (
     <div className="Tab">
-      {/*  <select
+      <select
         className="Tab__project"
         type="text"
         value={project}
@@ -17,7 +17,7 @@ const Tab = (props) => {
       >
         <option>god_eyes</option>
         <option>poleteli_vpn</option>
-      </select> */}
+      </select>
       <ListTab project={project}></ListTab>
       <button
         style={{ cursor: "pointer" }}

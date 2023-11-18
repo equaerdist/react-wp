@@ -23,7 +23,7 @@ import { initCashGiven, initCashRequest } from "../../actions/cashActions";
 const Cash = (props) => {
   const [givenPage, setGivenPage] = useState(1);
   const [requestPage, setRequestPage] = useState(1);
-
+  const project = useSelector((state) => state.global.project);
   const [sortGivenParam, setGivenSortParam] = useState("id");
   const [sortGivenOrder, setGivenSortOrder] = useState("asc");
 
@@ -51,7 +51,7 @@ const Cash = (props) => {
   };
 
   const onRequestClick = () => {
-    requestClick(config.api, request, requestNotes, selected);
+    dispatch(requestClick(config.api, request, requestNotes, selected));
   };
   const onRequestSort = (property) => {
     const isAsc = property === sortRequestParam && sortRequestOrder === "asc";
@@ -139,7 +139,7 @@ const Cash = (props) => {
     );
     setGivenPage(1);
     // eslint-disable-next-line
-  }, [sortGivenParam, sortGivenOrder, givenTerm]);
+  }, [sortGivenParam, sortGivenOrder, givenTerm, project]);
   useEffect(() => {
     dispatch("CASH_RESET_SELECTED");
   }, [dispatch]);
@@ -156,7 +156,7 @@ const Cash = (props) => {
     );
     setRequestPage(1);
     // eslint-disable-next-line
-  }, [sortRequestOrder, sortRequestParam, requestTerm]);
+  }, [sortRequestOrder, sortRequestParam, requestTerm, project]);
   let requestLabels =
     requestNotes.length === 0
       ? null

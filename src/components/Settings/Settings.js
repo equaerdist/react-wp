@@ -59,6 +59,7 @@ const Settings = (props) => {
         }/settings?sortOrder=${sortOrder}&sortParam=${sortParam}&page=${1}&pageSize=${pageSize}`
       )
     );
+    setPage(1);
   }, [dispatch, request, project, pageSize, sortParam, sortOrder]);
   useEffect(() => {
     if (page !== 1) {
@@ -258,7 +259,6 @@ const Settings = (props) => {
         sortParam,
         (prop) => {
           onSortSet(prop);
-          setPage(1);
         },
         setNewPage,
         isSelected,

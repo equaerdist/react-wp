@@ -24,7 +24,7 @@ import {
 const Report = (props) => {
   const request = useHttp();
   const dispatch = useDispatch();
-  const project = useSelector((state) => state.global);
+  const project = useSelector((state) => state.global.project);
   const walletReportObj = useSelector((state) => state.report.wallet);
   const walletArray = useMemo(() => [walletReportObj], [walletReportObj]);
   const walletHeaders = useMemo(() => ["Всего", "Заморожено", "Доступно"], []);
@@ -65,7 +65,7 @@ const Report = (props) => {
   useEffect(() => {
     dispatch("REPORT_LOADING_REFERRAL");
     request(`${config.api}/report/referral`)
-      .then(walletTransform)
+      .then((e) => walletTransform(e, project, false))
       .then((data) => dispatch(referralReport(data)))
       .catch(() => dispatch("REPORT_ERROR_REFERRAL"));
     dispatch("REPORT_LOADING_USER");
@@ -107,7 +107,7 @@ const Report = (props) => {
       },
       "POST"
     )
-      .then(walletTransform)
+      .then((e) => walletTransform(e, project, true))
       .then((data) => dispatch(walletReport(data)))
       .catch(() => dispatch("REPORT_ERROR_WALLET"));
   }, [walletFirstTime, walletLastTime, walletOffset, project]);
@@ -236,7 +236,7 @@ const Report = (props) => {
                 onClick={() => setRub((rub) => !rub)}
               >
                 <div className="box rub" id={rub ? "rub" : null}></div>
-                <span>оплатили RUB</span>
+                <span>оплатили {project === "god_eyes" ? "USDT" : "RUB"}</span>
               </li>
               <li
                 className="report__param"
