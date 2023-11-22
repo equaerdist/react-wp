@@ -4,10 +4,10 @@ const cashTranformGiven = (data, isRequest) => {
     let temp = {
       ...singleNote,
       ...singleNote.user,
-      id: singleNote.id,
-      userId: singleNote.user.id,
-      createAt: formatDate(singleNote.createAt),
-      paidAt: formatDate(singleNote.paidAt),
+      id: singleNote?.id,
+      userId: singleNote?.user?.id,
+      createAt: formatDate(singleNote?.createAt),
+      paidAt: formatDate(singleNote?.paidAt),
     };
     delete temp.user;
     delete temp.isReplay;
@@ -27,7 +27,6 @@ const cashTranformGiven = (data, isRequest) => {
 const createColumnsForCashGiven = (obj, width = 0) => {
   const minWidth = width / Object.keys(obj).length;
   return Object.keys(obj).map((id) => {
-    console.log(id);
     switch (id) {
       case "createAt":
         return { id, label: "Дата создания", minWidth, sort: id };

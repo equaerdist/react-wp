@@ -48,7 +48,7 @@ const cash = (state = initialState, action) => {
     case "CASH_ADD_GIVEN":
       return {
         ...state,
-        given: [...state.given, ...action.payload],
+        given: [action.payload, ...state.given],
         givenProcess: "idle",
       };
     case "CASH_ADD_REQUESTS":

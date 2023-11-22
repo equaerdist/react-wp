@@ -1,6 +1,5 @@
 const walletTransform = (walletReport, project, isWallet) => {
   let result = JSON.parse(JSON.stringify(walletReport));
-  console.log(project);
   if (project === "god_eyes" && !isWallet) {
     for (let item in walletReport) {
       result[item] = `USDT: ${walletReport[item].usdt}`;

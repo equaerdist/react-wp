@@ -47,12 +47,17 @@ export default function ColumnGroupingTable(props) {
         sx={{
           maxHeight: "100%",
           overflowY: "auto",
+          overflowX: "hidden",
           ...styles,
         }}
         onScroll={onPage}
         ref={elem}
       >
-        <Table stickyHeader aria-label="sticky table">
+        <Table
+          stickyHeader
+          aria-label="sticky table"
+          style={{ overflowX: "hidden" }}
+        >
           <TableHead>
             <TableRow role="checkbox">
               {columns.map((column) => {

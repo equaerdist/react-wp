@@ -24,6 +24,10 @@ const requestClick = (api, request, requestNotes, selected) => (dispatch) => {
     "PUT"
   )
     .then(() => {
+      const given = requestNotes.filter(
+        (item) => !elemInArrayById(item, selected)
+      )[0];
+      if (given) dispatch(addedGiven(given));
       dispatch(
         receivedRequests(
           requestNotes.filter((item) => elemInArrayById(item, selected))
@@ -31,7 +35,9 @@ const requestClick = (api, request, requestNotes, selected) => (dispatch) => {
       );
       dispatch("CASH_RESET_SELECTED");
     })
-    .catch(() => dispatch("CASH_ERROR_REQUESTS"));
+    .catch((e) => {
+      dispatch("CASH_ERROR_REQUESTS");
+    });
 };
 const initCashGiven =
   (request, api, pageSize, sortParam, sortOrder, searchTerm) => (dispatch) => {
@@ -57,7 +63,9 @@ const initCashRequest =
     )
       .then((data) => cashTranformGiven(data))
       .then((data) => dispatch(receivedRequests(data)))
-      .catch(() => dispatch("CASH_ERROR_REQUESTS"));
+      .catch((e) => {
+        dispatch("CASH_ERROR_REQUESTS");
+      });
   };
 const givenPaged =
   (api, request, Page, pageSize, sortParam, sortOrder, givenTerm) =>

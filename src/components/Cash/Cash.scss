@@ -14,7 +14,7 @@
       filter: invert(0);
       background-image: url("../../img/Icon.png");
     }
-    margin-left: 584px;
+    margin-left: calc(45% + 20px);
   }
   &__tables {
     height: 100%;
@@ -37,7 +37,7 @@
         background-image: url("../../img/Icon.png");
       }
     }
-    width: 564px;
+    width: 45%;
     &-body {
       padding-top: 6px;
       border-radius: 3px;
@@ -51,7 +51,7 @@
         background-image: url("../../img/bell.png");
       }
     }
-    width: 564px;
+    width: 45%;
     margin-left: 20px;
     &-body {
       border-radius: 3px;
