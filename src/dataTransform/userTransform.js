@@ -92,7 +92,7 @@ const createTestUserSubColumns = (obj, project) => {
     });
   return result;
 };
-const userTransform = (ar) => {
+const userTransform = (ar, project) => {
   return ar.map((user) => {
     let result = {
       ...user,
@@ -107,7 +107,7 @@ const userTransform = (ar) => {
         : "N/A",
       ...fromEntries(
         user.wallets
-          .map((obj) => [`wallet.${obj.type}`, obj.balance])
+          .map((obj) => [`wallet.${obj.type ?? obj.currency}`, obj.balance])
           .sort((first, last) => first[0] > last[0])
       ),
     };
