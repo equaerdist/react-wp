@@ -106,7 +106,9 @@ const userTransform = (ar) => {
           : "N/A"
         : "N/A",
       ...fromEntries(
-        user.wallets.map((obj) => [`wallet.${obj.type}`, obj.balance])
+        user.wallets
+          .map((obj) => [`wallet.${obj.type}`, obj.balance])
+          .sort((first, last) => first[0] > last[0])
       ),
     };
     return result;
