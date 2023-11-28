@@ -39,7 +39,9 @@ const onInit =
     )
       .then(userTransform)
       .then((data) => dispatch(setUsers([...data])))
-      .catch((e) => dispatch("USER_ERROR_USERS"));
+      .catch((e) => {
+        dispatch("USER_ERROR_USERS");
+      });
   };
 
 const applyFree = (request, api, selected, duration, all) => (dispatch) => {

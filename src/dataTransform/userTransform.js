@@ -1,5 +1,10 @@
 import formatDate from "./dateTransform";
-
+function fromEntries(iterable) {
+  return [...iterable].reduce((obj, [key, val]) => {
+    obj[key] = val;
+    return obj;
+  }, {});
+}
 const createUserColumns = (obj, project) => {
   let result = Object.keys(obj).map((id) => {
     switch (id) {
@@ -23,8 +28,13 @@ const createUserColumns = (obj, project) => {
         return { id, label: "Зарегистрирован", sort: id };
       case "dateEnd":
         return { id, label: "Дата окончания тарифа", sort: "usersKeys." + id };
-      default:
+
+      default: {
+        if (id.includes("wallet."))
+          return { id, label: `Баланс ${id.split(".")[1]}`, sort: id };
+
         return null;
+      }
     }
   });
   if (project && project.includes("god"))
@@ -38,6 +48,7 @@ const createUserColumns = (obj, project) => {
         return null;
       return item;
     });
+
   return result;
 };
 const createTestUserSubColumns = (obj, project) => {
@@ -63,6 +74,7 @@ const createTestUserSubColumns = (obj, project) => {
         return { id, label: "Зарегистрирован", sort: id };
       /*  case "dateEnd":
         return { id, label: "Дата окончания тарифа", sort: "usersKeys." + id }; */
+
       default:
         return null;
     }
@@ -93,6 +105,9 @@ const userTransform = (ar) => {
           ? formatDate(user.usersKeys[0].dateEnd)
           : "N/A"
         : "N/A",
+      ...fromEntries(
+        user.wallets.map((obj) => [`wallet.${obj.type}`, obj.balance])
+      ),
     };
     return result;
   });
