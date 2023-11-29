@@ -32,7 +32,9 @@ const createUserColumns = (obj, project) => {
       default: {
         if (id.includes("wallet."))
           return { id, label: `Баланс ${id.split(".")[1]}`, sort: id };
-
+        else if (id.includes("balance")) {
+          return { id, label: "Баланс", sort: id + ".value" };
+        }
         return null;
       }
     }
@@ -105,12 +107,20 @@ const userTransform = (ar, project) => {
           ? formatDate(user.usersKeys[0].dateEnd)
           : "N/A"
         : "N/A",
-      ...fromEntries(
-        user.wallets
-          .map((obj) => [`wallet.${obj.type ?? obj.currency}`, obj.balance])
-          .sort((first, last) => first[0] > last[0])
-      ),
     };
+    if (user.wallets != null)
+      result = {
+        ...result,
+        ...fromEntries(
+          user.wallets
+            .map((obj) => [`wallet.${obj.type ?? obj.currency}`, obj.balance])
+            .sort((first, last) => first[0] > last[0])
+        ),
+      };
+    else {
+      result = { ...result, balance: user.balance?.value };
+    }
+
     return result;
   });
 };
