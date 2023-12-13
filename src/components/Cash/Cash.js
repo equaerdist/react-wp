@@ -15,14 +15,14 @@ import {
   inputGiven,
   inputRequest,
   requestPaged,
+  requestSetPage,
+  givenSetPage,
 } from "../../actions/cashActions";
 import TableWrapper from "../TableWrapper/TableWrapper";
 import { createColumnsForCashGiven } from "../../dataTransform/cashTransform";
 import "./Cash.scss";
 import { initCashGiven, initCashRequest } from "../../actions/cashActions";
 const Cash = (props) => {
-  const [givenPage, setGivenPage] = useState(1);
-  const [requestPage, setRequestPage] = useState(1);
   const project = useSelector((state) => state.global.project);
   const [sortGivenParam, setGivenSortParam] = useState("id");
   const [sortGivenOrder, setGivenSortOrder] = useState("asc");
@@ -43,11 +43,13 @@ const Cash = (props) => {
 
   const givenCondition = useSelector((state) => state.cash.givenProcess);
   const requestCondition = useSelector((state) => state.cash.requestProcess);
+  const givenPageNumber = useSelector((state) => state.cash.givenPage);
+  const requestPageNumber = useSelector((state) => state.cash.requestPage);
   const onGivenSortSet = (property) => {
     const isAsc = property === sortGivenParam && sortGivenOrder === "asc";
     setGivenSortParam(property);
     setGivenSortOrder(isAsc ? "desc" : "asc");
-    setGivenPage(1);
+    dispatch(givenSetPage(1));
   };
 
   const onRequestClick = () => {
@@ -57,23 +59,23 @@ const Cash = (props) => {
     const isAsc = property === sortRequestParam && sortRequestOrder === "asc";
     setRequestSortParam(property);
     setRequestSortOrder(isAsc ? "desc" : "asc");
-    setRequestPage(1);
+    dispatch(requestSetPage(1));
   };
   const setNewRequestPage = () => {
     if (
       requestNotes.length % pageSize === 0 &&
-      givenCondition === "idle" &&
-      requestPage * pageSize === requestNotes.length
+      requestCondition === "idle" &&
+      requestNotes.length === pageSize * requestPageNumber
     )
-      setRequestPage((page) => page + 1);
+      dispatch(requestSetPage(requestPageNumber + 1));
   };
   const setNewGivenPage = () => {
     if (
       givenNotes.length % pageSize === 0 &&
-      requestCondition === "idle" &&
-      givenPage * pageSize === givenNotes.length
+      givenCondition === "idle" &&
+      givenNotes.length === pageSize * givenPageNumber
     )
-      setGivenPage((page) => page + 1);
+      dispatch(givenSetPage(givenPageNumber + 1));
   };
 
   const selected = useSelector((state) => state.cash.selectedRequests);
@@ -90,42 +92,44 @@ const Cash = (props) => {
   };
   const onRequestInput = (value) => {
     dispatch(inputRequest(value));
-    setRequestPage(1);
+    dispatch(requestSetPage(1));
   };
   const onGivenInput = (value) => {
     dispatch(inputGiven(value));
-    setGivenPage(1);
+    dispatch(givenSetPage(1));
   };
   useEffect(() => {
-    if (givenPage !== 1)
+    if (givenPageNumber !== 1)
       dispatch(
         givenPaged(
           config.api,
           request,
-          givenPage,
+          givenPageNumber,
           pageSize,
           sortGivenParam,
           sortGivenOrder,
+          givenNotes,
           givenTerm
         )
       );
     // eslint-disable-next-line
-  }, [givenPage]);
+  }, [givenPageNumber]);
   useEffect(() => {
-    if (requestPage !== 1)
+    if (requestPageNumber !== 1)
       dispatch(
         requestPaged(
           config.api,
           request,
-          requestPage,
+          requestPageNumber,
           pageSize,
           sortRequestParam,
           sortRequestOrder,
+          requestNotes,
           requestTerm
         )
       );
     // eslint-disable-next-line
-  }, [requestPage]);
+  }, [requestPageNumber]);
   useEffect(() => {
     dispatch(
       initCashGiven(
@@ -137,7 +141,7 @@ const Cash = (props) => {
         givenTerm
       )
     );
-    setGivenPage(1);
+    dispatch(givenSetPage(1));
     // eslint-disable-next-line
   }, [sortGivenParam, sortGivenOrder, givenTerm, project]);
   useEffect(() => {
@@ -154,7 +158,7 @@ const Cash = (props) => {
         requestTerm
       )
     );
-    setRequestPage(1);
+    dispatch(requestSetPage(1));
     // eslint-disable-next-line
   }, [sortRequestOrder, sortRequestParam, requestTerm, project]);
   let requestLabels =

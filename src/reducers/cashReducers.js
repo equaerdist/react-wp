@@ -6,6 +6,8 @@ const initialState = {
   givenTerm: "",
   requestTerm: "",
   selectedRequests: [],
+  requestPage: 1,
+  givenPage: 1,
 };
 const cash = (state = initialState, action) => {
   switch (action.type) {
@@ -48,7 +50,7 @@ const cash = (state = initialState, action) => {
     case "CASH_ADD_GIVEN":
       return {
         ...state,
-        given: [action.payload, ...state.given],
+        given: [...action.payload, ...state.given],
         givenProcess: "idle",
       };
     case "CASH_ADD_REQUESTS":
@@ -61,6 +63,10 @@ const cash = (state = initialState, action) => {
       return { ...state, givenTerm: action.payload };
     case "CASH_INPUT_REQUESTS":
       return { ...state, requestTerm: action.payload };
+    case "CASH_PAGED_GIVEN":
+      return { ...state, givenPage: action.payload };
+    case "CASH_PAGED_REQUESTS":
+      return { ...state, requestPage: action.payload };
     default:
       return state;
   }

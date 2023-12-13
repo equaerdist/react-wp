@@ -1,10 +1,13 @@
 import { cashTranformGiven } from "../dataTransform/cashTransform";
 import elemInArrayById from "../tools/arrayTool";
+import { createAction } from "@reduxjs/toolkit";
 const receivedGiven = (payload) => ({ type: "CASH_RECEIVE_GIVEN", payload });
 const receivedRequests = (payload) => ({
   type: "CASH_RECEIVE_REQUESTS",
   payload,
 });
+const givenSetPage = createAction("CASH_PAGED_GIVEN");
+const requestSetPage = createAction("CASH_PAGED_REQUESTS");
 const addedGiven = (payload) => ({ type: "CASH_ADD_GIVEN", payload });
 const addedRequests = (payload) => ({ type: "CASH_ADD_REQUESTS", payload });
 export {
@@ -68,7 +71,7 @@ const initCashRequest =
       });
   };
 const givenPaged =
-  (api, request, Page, pageSize, sortParam, sortOrder, givenTerm) =>
+  (api, request, Page, pageSize, sortParam, sortOrder, old, givenTerm) =>
   (dispatch) => {
     dispatch("CASH_LOADING_GIVEN");
     request(
@@ -76,19 +79,20 @@ const givenPaged =
     )
       .then(cashTranformGiven)
       .then((data) => {
-        dispatch(addedGiven(data));
+        dispatch(receivedGiven([...old, ...data]));
       })
       .catch(() => dispatch("CASH_ERROR_GIVEN"));
   };
 const requestPaged =
-  (api, request, page, pageSize, sortParam, sortOrder, term) => (dispatch) => {
+  (api, request, page, pageSize, sortParam, sortOrder, old, term) =>
+  (dispatch) => {
     dispatch("CASH_LOADING_REQUESTS");
     request(
       `${api}/cash/request?page=${page}&pageSize=${pageSize}&sortParam=${sortParam}&sortOrder=${sortOrder}&searchTerm=${term}`
     )
       .then(cashTranformGiven)
       .then((data) => {
-        dispatch(addedRequests(data));
+        dispatch(receivedRequests([...old, ...data]));
       })
       .catch(() => dispatch("CASH_ERROR_REQUESTS"));
   };
@@ -113,4 +117,6 @@ export {
   inputRequest,
   removeSelect,
   requestClick,
+  givenSetPage,
+  requestSetPage,
 };

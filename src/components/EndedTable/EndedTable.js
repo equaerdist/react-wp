@@ -11,6 +11,7 @@ import { visuallyHidden } from "@mui/utils";
 
 export default function ColumnGroupingTable(props) {
   let columns = props.columns;
+  let stab = React.useRef(0);
   const rows = props.rows;
   let elem = React.useRef(null);
   const {
@@ -31,7 +32,11 @@ export default function ColumnGroupingTable(props) {
     const scrollHeight = e.target.scrollHeight;
     const clientHeight = e.target.clientHeight;
     if (scrollTop + clientHeight >= scrollHeight - 100) {
-      if (onScroll) onScroll();
+      if (onScroll && stab.current == 0) {
+        onScroll();
+        stab.current = 1;
+        setTimeout(() => (stab.current = 0), 50);
+      }
     }
   };
   return (
