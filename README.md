@@ -1,70 +1,39 @@
-# Getting Started with Create React App
+# Название проекта
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Админ панель на React.js
 
-## Available Scripts
+## Описание
 
-In the project directory, you can run:
+Этот проект представляет собой админ панель, разработанную для управления основными данными и настроек бизнес логики приложения. Админ панель базируется на ASP.NET Web API, MySQL и использует систему авторизации, основанную на JWT токенах.
 
-### `npm start`
+## Функциональности
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Авторизация с использованием JWT токенов
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Админ панель обеспечивает систему авторизации, используя JWT (JSON Web Token) для аутентификации пользователя. Вход в систему осуществляется с помощью учетных данных пользователя, и после успешной аутентификации выдается JWT токен, который используется для доступа к защищенным разделам админ панели.
 
-### `npm test`
+### Основные данные
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+В разделе "Основные данные" собрана общая информация о приложении. Здесь можно просматривать и редактировать основные данные, такие как общая статистика, настройки приложения и другую существенную информацию.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Редактирование пользователей
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+В секции "Редактирование пользователей" можно просматривать и управлять пользователями приложения. Эта функциональность включает возможность создания, редактирования и удаления пользователей, а также просмотр дополнительной информации о каждом пользователе.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+### Редактирование тарифов и генерация промокодов
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Секция "Редактирование тарифов и генерация промокодов" позволяет управлять тарифами приложения. Здесь можно добавлять новые тарифы, редактировать существующие и генерировать промокоды для акций и скидок.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Настройки
 
-## Learn More
+В секции "Настройки" можно настраивать параметры бизнес логики приложения. Здесь предоставляются возможности для настройки различных параметров, таких как лимиты, правила и другие параметры, влияющие на функциональность приложения.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+![Вид панели](Безымянный.png)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
